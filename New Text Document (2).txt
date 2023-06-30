@@ -1,0 +1,40 @@
+  // 
+}
+// void input(){
+//   Serial.println("Enter value:");
+//   while(Serial.available()==0){}
+//   age = Serial.parseInt();
+  
+//   Serial.print("Hello ");
+//   Serial.print("Your input value is:");
+//   Serial.println(age);
+//   Serial.read(); // if no put will loop 2 times
+// }
+
+// void working(){
+//   // Serial.println("working here");
+//   // Serial.println(age);
+//   // String s1=age;
+//   // String backside="\r\n";
+//   // String move="#1P"+String(age)+"T1000\\r\\n";
+  
+//   // char move="#1P"+String(age)+"T1000\\r\\n";
+
+//   // Serial.print('"'+move+'"');  
+//   // Serial.println(move);
+//   // Serial2.println("#1P"+String(age)+"T1000\\r\\n");
+//   Serial2.print("#1P800T1000\r\n");
+//   // Serial2.println(String('"'+move+'"'));
+//   // delay(1000);
+
+
+//   // Serial2.print("#1P800T1000\r\n");  // S1号舵机旋转到脉宽为800的位置，使用时间1000ms
+//   // Serial2.print("#1P800T10000x0D0x0A");  // S1号舵机旋转到脉宽为800的位置，使用时间1000ms
+//   // delay(1000);  // 延时1000ms，舵机刚好执行完上一条命令
+//   // Serial2.print("#1P1800T1000\r\n");  // S1号舵机旋转到脉宽为1800的位置，使用时间1000ms
+//   // delay(1000);  // 延时1000ms，舵机刚好执行完上一条命令
+  
+// }
+
+
+// #STOP\r\n

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module fritzingVersion="0.9.10b.2022-07-01.CD-2134-0-40d23c29" icon="Custom1.png">
+    <title>RTrobot</title>
+    <instances>
+        <instance moduleIdRef="RTrobot - Servo24_f8301f60604eb97269a65f10379b826c_1" modelIndex="5772" path="C:/Users/user/Documents/Fritzing/parts/contrib/RTrobot - Servo24_f8301f60604eb97269a65f10379b826c_1.fzp">
+            <views/>
+        </instance>
+        <instance moduleIdRef="RTrobot - Servo32_f2e476d7ab7704a036dbf1c59b1d024c_16" modelIndex="5774" path="C:/Users/user/Documents/Fritzing/parts/contrib/RTrobot - Servo32_f2e476d7ab7704a036dbf1c59b1d024c_16.fzp">
+            <views/>
+        </instance>
+        <instance moduleIdRef="RTrobot - Servo16_ea195cae353c896d1309c4f5e2ee09e4_1" modelIndex="5777" path="C:/Users/user/Documents/Fritzing/parts/contrib/RTrobot - Servo16_ea195cae353c896d1309c4f5e2ee09e4_1.fzp">
+            <views/>
+        </instance>
+    </instances>
+</module>

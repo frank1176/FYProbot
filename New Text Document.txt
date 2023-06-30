@@ -1,0 +1,5 @@
+https://docs.arduino.cc/learn/built-in-libraries/eeprom
+
+https://www.programiz.com/c-programming/examples/ASCII-value-character
+
+https://www.cs.cmu.edu/~pattis/15-1XX/common/handouts/ascii.html
