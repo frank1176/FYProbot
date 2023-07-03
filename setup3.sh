@@ -3,13 +3,37 @@
 ### rasberry pi 
 ## go root
 sudo su -
-
-
+apt update && apt -y dist-upgrade
+raspi-config
 
 # setting ip
 
 nano /etc/dhcpcd.conf
 
+###kenny 192.168.0.25
+
+
+###########setup cam ################
+
+apt -y install motion
+mkdir -p /var/log/motion
+chmod -R 777 /var/log/motion
+service motion restart
+service motion status
+service motion start
+service motion stop
+
+##start open port
+motion
+kill -9 1399
+
+nano /etc/motion/motion.conf
+
+# deamon -> on
+# webcontrol_localhost -> off
+# stream_localhost -> off
+#movie_output -> off
+#####################################
 
 ######YOLOV7#############
 
