@@ -14,7 +14,9 @@ cd ..
 git clone https://github.com/opencv/cvat
 cd cvat
 
-
+cd ~
+cd Desktop/sem6_v2/FYP/cvat
+/sem6_v2/FYP/cvat
 docker compose up -d
 
 docker ps

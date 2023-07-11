@@ -7,7 +7,7 @@ def rename_files(folder_path):
     # Iterate over each file
     for i, filename in enumerate(files):
         # Construct the new file name
-        new_filename = f"train_{i}.jpg"
+        new_filename = f"train1_{i}.jpg"
 
         # Get the full paths of the old and new file names
         old_filepath = os.path.join(folder_path, filename)
