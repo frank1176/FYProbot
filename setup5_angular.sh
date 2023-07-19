@@ -1,9 +1,14 @@
-####### back to pc no raspberry
-sudo su -
+####### back to pc not raspberry
+
+
+npm --version
+npm install -g npm@latest
+npm --version
+
+npm install -g @angular/cli
 npm install -g @angular/cli@latest
 npm list -g
 
-npm init @angular frontend_robot
+ng new frontend_robot
 cd frontend_robot
-npm start
 ng serve
