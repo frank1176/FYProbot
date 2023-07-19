@@ -36,9 +36,10 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles',
+    'test_app',
     'daphne',
     'channels',
+    'django.contrib.staticfiles',
 ]
 
 MIDDLEWARE = [
@@ -69,7 +70,9 @@ TEMPLATES = [
     },
 ]
 
+# ASGI_APPLICATION = 'backend_robot.asgi.application'
 WSGI_APPLICATION = 'backend_robot.wsgi.application'
+ASGI_APPLICATION = 'backend_robot.asgi.application'
 
 
 # Database

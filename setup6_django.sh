@@ -8,11 +8,10 @@ pip install --upgrade pip
 python -m django --version
 django-admin startproject backend_robot
 cd backend_robot
+pip install djangorestframework django-rest-knox django-cors-headers daphne channels
 python manage.py runserver
 python manage.py makemigrations
 python manage.py migrate
 python manage.py showmigrations
 
 python manage.py startapp test_app
-
-pip install djangorestframework django-rest-knox django-cors-headers daphne channels
