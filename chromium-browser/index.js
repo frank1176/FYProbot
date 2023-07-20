@@ -9,11 +9,14 @@
     (async () => {
         const browser = await puppeteer.launch({executablePath: '/usr/bin/chromium-browser', 
             // args: ['--use-fake-ui-for-media-stream'], dumpio: true}); // dumpio get all console log 
+            // args: ['--no-sandbox', '--disable-setuid-sandbox']});
             args: ['--no-sandbox', '--disable-setuid-sandbox','--use-fake-ui-for-media-stream']});
+            // args: ['--no-sandbox', '--disable-setuid-sandbox','--use-fake-ui-for-media-stream', '--use-fake-device-for-media-stream']});
         const page = await browser.newPage();
-        const mac_address = process.argv[2]
-        const url = 'https://romo.kynoci.com:4200/login_romo/' + mac_address
+        // const mac_address = process.argv[2]
+        // const url = 'https://romo.kynoci.com:4200/login_romo/' + mac_address
         // const url = 'https://google.com/'
+        const url = 'https://robot.kynoci.com:4200/login_romo/lim/cham' 
         await page.goto(url);
 
         // await page.waitForSelector('input[name=userNameInput]');
@@ -26,6 +29,6 @@
         // answerBtn.click();
         // await delay(5000);
 
-        await page.screenshot({path: 'screeshot12.png'});
+        await page.screenshot({path: 'screeshot3.png'});
         // await browser.close();
     })();
