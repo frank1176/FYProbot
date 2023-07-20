@@ -37,6 +37,7 @@ export class StreamingService {
     this.remoteVideo = remoteVideo
     this.role = role;
     let ws_scheme = window.location.protocol == "https:" ? "wss://" : "ws://";
+    // let ws_scheme = window.location.protocol == "https:" ? "ws://":"wss://"  ;
 
     console.log(this.localVideo)
     console.log(this.remoteVideo)

@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve --host 0.0.0.0 --port 4200 --disable-host-check --ssl /Documents/kynoci.com-sub-cert.pem --ssl-key /Documents/kynoci.com-sub-privkey.pem",
+    "start": "ng serve --host 0.0.0.0 --port 4200 --disable-host-check --ssl true --ssl-cert D:\\kynoci.com-sub-cert.pem --ssl-key D:\\kynoci.com-sub-privkey.pem",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
