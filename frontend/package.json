@@ -1,9 +1,9 @@
 {
-  "name": "frontend-robot",
+  "name": "frontend",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve --host 0.0.0.0 --port 4200 --disable-host-check --ssl /Documents/kynoci.com-sub-cert.pem --ssl-key /Documents/kynoci.com-sub-privkey.pem",
+    "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
