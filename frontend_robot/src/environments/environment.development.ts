@@ -16,7 +16,8 @@ export const environment = {
     //   },
       websocket: {
         //   host: "romo.kynoci.com:8000",
-          host: "192.168.0.138:8000",
+          // host: "192.168.0.138:8000",
+          host: "127.0.0.1:8000",
           path: '/ws/call/'
       },
     // face: {

@@ -25,9 +25,12 @@ SECRET_KEY = 'django-insecure-)4@^!x!kvisd_ja$5fvfh^6r+y-m(^=yzylm@6v&b)8+v!1rsb
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["localhost","127.0.0.1"]
 
-
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ORIGIN_WHITELIST = [
+    "http://localhost:4200"
+]
 # Application definition
 
 INSTALLED_APPS = [
@@ -39,6 +42,7 @@ INSTALLED_APPS = [
     'test_app',
     'daphne',
     'channels',
+    'corsheaders',
     'django.contrib.staticfiles',
 ]
 
@@ -50,6 +54,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "corsheaders.middleware.CorsMiddleware",
+    "django.middleware.common.CommonMiddleware",
 ]
 
 ROOT_URLCONF = 'backend_robot.urls'
@@ -70,6 +76,14 @@ TEMPLATES = [
     },
 ]
 
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("localhost", 6379)],
+        },
+    },
+}
 # ASGI_APPLICATION = 'backend_robot.asgi.application'
 WSGI_APPLICATION = 'backend_robot.wsgi.application'
 ASGI_APPLICATION = 'backend_robot.asgi.application'

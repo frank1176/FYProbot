@@ -154,17 +154,4 @@ EOF
 ################
 
 ################
-# UV4L 
-# https://www.highvoltagecode.com/post/webrtc-on-raspberry-pi-live-hd-video-and-audio-streaming(fail)
-sudo su -
-curl https://www.linux-projects.org/listing/uv4l_repo/lpkey.asc | sudo apt-key add -
-echo "deb https://www.linux-projects.org/listing/uv4l_repo/raspbian/stretch stretch main" | sudo tee /etc/apt/sources.list.d/uv4l.list
-apt-get update && apt-get upgrade
-apt-get install uv4l-webrtc
-apt-get install uv4l-webrtc-armv6
-uv4l --external-driver --device-name=video0
-
-#  http://yourraspberrypiip:8080/stream/webrtc
-
-
 ################
