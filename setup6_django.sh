@@ -15,3 +15,8 @@ python manage.py migrate
 python manage.py showmigrations
 
 python manage.py startapp test_app
+
+
+# daphne -e ssl:8000:privateKey=/etc/nginx/ssl/kynoci.com-sub-privkey.pem:certKey=/etc/nginx/ssl/kynoci.com-sub-cert.pem backend_robot.asgi:application
+daphne -e ssl:8000:privateKey=/kynoci.com-sub-privkey.pem:certKey=/kynoci.com-sub-cert.pem backend_robot.asgi:application
+

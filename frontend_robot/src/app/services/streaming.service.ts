@@ -53,7 +53,8 @@ export class StreamingService {
       + env.websocket.path
     );
     // }
-
+      console.log(this.callSocket);
+      
     this.callSocket.onopen = event => {
       //let's send myName to the socket
       this.callSocket?.send(JSON.stringify({
