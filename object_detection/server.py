@@ -89,14 +89,14 @@ class VideoTransformTrack(MediaStreamTrack):
             return frame
 
 
-async def index(request):
-    content = open(os.path.join(ROOT, "index.html"), "r").read()
-    return web.Response(content_type="text/html", text=content)
+# async def index(request):
+#     content = open(os.path.join(ROOT, "index.html"), "r").read()
+#     return web.Response(content_type="text/html", text=content)
 
 
-async def javascript(request):
-    content = open(os.path.join(ROOT, "client.js"), "r").read()
-    return web.Response(content_type="application/javascript", text=content)
+# async def javascript(request):
+#     content = open(os.path.join(ROOT, "client.js"), "r").read()
+#     return web.Response(content_type="application/javascript", text=content)
 
 
 async def offer(request):
@@ -153,6 +153,7 @@ async def offer(request):
         async def on_ended():
             log_info("Track %s ended", track.kind)
             await recorder.stop()
+        
 
     # handle offer
     await pc.setRemoteDescription(offer)
@@ -162,12 +163,14 @@ async def offer(request):
     answer = await pc.createAnswer()
     await pc.setLocalDescription(answer)
 
-    return web.Response(
+    response= web.Response(
         content_type="application/json",
         text=json.dumps(
             {"sdp": pc.localDescription.sdp, "type": pc.localDescription.type}
         ),
     )
+    response.headers["Access-Control-Allow-Origin"] = "https://romo.kynoci.com:4200"
+    return response
 
 
 async def on_shutdown(app):
@@ -206,8 +209,8 @@ if __name__ == "__main__":
 
     app = web.Application()
     app.on_shutdown.append(on_shutdown)
-    app.router.add_get("/", index)
-    app.router.add_get("/client.js", javascript)
+    # app.router.add_get("/", index)
+    # app.router.add_get("/client.js", javascript)
     app.router.add_post("/offer", offer)
     web.run_app(
         app, access_log=None, host=args.host, port=args.port, ssl_context=ssl_context

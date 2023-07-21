@@ -16,7 +16,12 @@ python manage.py showmigrations
 
 python manage.py startapp test_app
 
-
+###########backend##################
 # daphne -e ssl:8000:privateKey=/etc/nginx/ssl/kynoci.com-sub-privkey.pem:certKey=/etc/nginx/ssl/kynoci.com-sub-cert.pem backend_robot.asgi:application
 daphne -e ssl:8000:privateKey=/kynoci.com-sub-privkey.pem:certKey=/kynoci.com-sub-cert.pem backend_robot.asgi:application
 
+
+
+#######object detection#########
+cd FYProbot/object_detection
+python server.py --cert-file /kynoci.com-sub-cert.pem --key-file /kynoci.com-sub-privkey.pem
