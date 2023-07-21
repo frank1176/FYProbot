@@ -9,6 +9,7 @@ pip install -r requirements.txt
 
 # try use
 python detect.py --weights yolov5s.pt --source 0
+python detect.py --weights yolov5s.pt --source 0 --conf 0.8
 # train 
 python train.py --img 640 --epochs 3 --data coco128.yaml --weights yolov5s.pt
 # python train.py --data coco.yaml --epochs 300 --weights '' --cfg yolov5n.yaml  --batch-size 128
@@ -17,7 +18,7 @@ python train.py --img 640 --epochs 3 --data coco128.yaml --weights yolov5s.pt
 
 #train using gpu
 pip install torch==1.10.0+cu113 torchvision==0.11.1+cu113 torchaudio===0.10.0+cu113 -f https://download.pytorch.org/whl/cu113/torch_stable.html
-pip install torch torchvision torchaudio numpy opencv-python pandas matplotlib PyYAML tensorboard seaborn
+pip install torch torchvision torchaudio numpy opencv-python pandas matplotlib PyYAML tensorboard seaborn psutil
 
 ####fix this problem ###################
 #https://gist.github.com/cobryan05/7d1fe28dd370e110a372c4d268dcb2e5
