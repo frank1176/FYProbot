@@ -4,7 +4,7 @@ export const environment = {
       http: {
           // apiUrl: 'https://localhost:8000/api/',
           // apiUrl: 'https://192.168.0.138:8000/api/', 
-        //   apiUrl: 'https://romo.kynoci.com:8000/api/', 
+          apiUrl: 'https://robot.kynoci.com:8000/api/', 
       },
     //   mqtt: {
     //       server: 'w33.kynoci.com',
@@ -21,13 +21,13 @@ export const environment = {
           host: "robot.kynoci.com:8000",
           path: '/ws/call/'
       },
-    // face: {
-    //   host: "https://romo.kynoci.com:8081",
-    //       live_path: '/offer',
-    //   capture_path: '/capture',
-    //   retrieveCap_path: '/retrieveCapture',
-    //   retrieveInt_path: '/retrieveIntruder'
-    // },
+    object: {
+      host: "https://robot.kynoci.com:8081",
+          live_path: '/offer',
+      // capture_path: '/capture',
+      // retrieveCap_path: '/retrieveCapture',
+      // retrieveInt_path: '/retrieveIntruder'
+    },
     pcConfig: {
 		"iceServers":
       [
