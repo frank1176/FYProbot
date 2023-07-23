@@ -65,35 +65,36 @@ export class ObjectDectectionService {
     })
   }
 
-  start(remoteLocalVideo:any, remoteFaceVideo:any, videoType:string, userName:string, mac_address?:string){
+  // start(remoteLocalVideo:any, remoteFaceVideo:any, videoType:string, userName:string, mac_address?:string){
     
-    this.createPeerConnection()
-    var constraints={
-      audio:false,
-      video:true
-    }  
+  //   this.createPeerConnection()
+  //   var constraints={
+  //     audio:false,
+  //     video:true
+  //   }  
 
-    if(constraints.audio || constraints.video){
-      if(this.videoType === 'object_dectection'){
-        this.localStream = this.localStream.captureStream()
-        this.localStream.getTracks().forEach((track:any)=>{
-          this.sender =this.pc.addTrack(track,this.localStream)
-          return this.negotiate()
-        })
-      }else{
-        navigator.mediaDevices.getUserMedia(constraints).then((stream:any)=>{
-          this.localStream = stream
-          this.localStream.getTracks().forEach((track:any)=>{
-            this.sender =this.pc.addTrack(track,this.localStream)
-          })
-          return this.negotiate()
-        })
-      }
-    }else{
-        this.negotiate()
-    }
-  }
+  //   if(constraints.audio || constraints.video){
+  //     if(this.videoType === 'object_dectection'){
+  //       this.localStream = this.localStream.captureStream()
+  //       this.localStream.getTracks().forEach((track:any)=>{
+  //         this.sender =this.pc.addTrack(track,this.localStream)
+  //         return this.negotiate()
+  //       })
+  //     }else{
+  //       navigator.mediaDevices.getUserMedia(constraints).then((stream:any)=>{
+  //         this.localStream = stream
+  //         this.localStream.getTracks().forEach((track:any)=>{
+  //           this.sender =this.pc.addTrack(track,this.localStream)
+  //         })
+  //         return this.negotiate()
+  //       })
+  //     }
+  //   }else{
+  //       this.negotiate()
+  //   }
+  // }
 
+  
   stop(){
     this.pc.remoteStream(this.localStream)
     this.pc.removeTrack(this.sender)
