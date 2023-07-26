@@ -15,7 +15,8 @@ v4l2rtspserver -F 30 -W 640 -H 480 -P 8554 /dev/video0
 v4l2rtspserver -F 60 -W 640 -H 480 -P 8554 /dev/video0
 
 
-
+# yolov5 
+python detect.py --source rtsp://engineer:anakperantau@192.168.0.23:8554/unicast --weights yolov5s.pt
 
 ######
 sudo apt-get update
