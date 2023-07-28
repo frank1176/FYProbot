@@ -17,9 +17,11 @@ python train.py --img 640 --epochs 3 --data coco128.yaml --weights yolov5s.pt
 
 
 #train using gpu
-pip install torch==1.10.0+cu113 torchvision==0.11.1+cu113 torchaudio===0.10.0+cu113 -f https://download.pytorch.org/whl/cu113/torch_stable.html
+pip3 install torch==1.10.0+cu113 torchvision==0.11.1+cu113 torchaudio===0.10.0+cu113 -f https://download.pytorch.org/whl/cu113/torch_stable.html
 pip install torch torchvision torchaudio numpy opencv-python pandas matplotlib PyYAML tensorboard seaborn psutil
 
+####cu important
+pip install torch==2.0.0+cu117 torchvision==0.15.1+cu117 torchaudio==2.0.1 --index-url https://download.pytorch.org/whl/cu117
 ####fix this problem ###################
 #https://gist.github.com/cobryan05/7d1fe28dd370e110a372c4d268dcb2e5
 # oserror: [winerror 1455] the paging file is too small for this operation to complete. error loading c:\users\user\appdata\local\programs\python\python39\lib\site-packages\torch\lib\caffe2_detectron_ops_gpu.dll or one of its dependencies.
