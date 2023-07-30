@@ -57,13 +57,12 @@ void reset(){
   Serial2.print("#1P0000T0000\r\n"); //start
   
   Serial2.print("#1P1500T0500\r\n");
-  
   delay(2000);
-  Serial2.print("#2P1600T0500\r\n");
+  Serial2.print("#2P1400T0500\r\n");
   delay(2000);
-  Serial2.print("#3P2000T0500\r\n");
+  Serial2.print("#3P2480T0500\r\n");
   delay(2000);
-  Serial2.print("#4P800T0500\r\n");
+  Serial2.print("#4P750T0500\r\n");
   delay(2000);
   Serial2.print("#5P1500T0500\r\n");
   delay(2000);
