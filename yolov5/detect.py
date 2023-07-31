@@ -166,6 +166,19 @@ def run(
                         line = (cls, *xywh, conf) if save_conf else (cls, *xywh)  # label format
                         with open(f'{txt_path}.txt', 'a') as f:
                             f.write(('%g ' * len(line)).rstrip() % line + '\n')
+                    
+                    # Calculate the midpoint
+                    x1, y1, x2, y2 = [int(x) for x in xyxy]
+                    # midpoint = ((x1 + x2) / 2, (y1 + y2) / 2)
+                    # print(f"The midpoint of the bounding box is: {midpoint}")
+                    mid_x=int((x1+x2)/2)
+                    mid_y=int((y1+y2)/2)
+                    color = (0, 255, 0)  # green color for midpoint
+                    thickness = 3  # dot thickness
+                    cv2.circle(im0, (mid_x, mid_y), thickness, color, -1)  # -1 thickness makes circle filled
+                    # label = f'Midpoint: ({mid_x:.2f}, {mid_y:.2f})'
+                    # cv2.putText(im0, label, (mid_x, mid_y), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 255, 255), 2)
+
 
                     if save_img or save_crop or view_img:  # Add bbox to image
                         c = int(cls)  # integer class
