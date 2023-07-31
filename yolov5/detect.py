@@ -176,6 +176,8 @@ def run(
                     color = (0, 255, 0)  # green color for midpoint
                     thickness = 3  # dot thickness
                     cv2.circle(im0, (mid_x, mid_y), thickness, color, -1)  # -1 thickness makes circle filled
+                    line_frame = cv2.line(im0, (100, 0), (100, 640), (0, 255, 0), 2)
+                    
                     # label = f'Midpoint: ({mid_x:.2f}, {mid_y:.2f})'
                     # cv2.putText(im0, label, (mid_x, mid_y), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 255, 255), 2)
 

@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 
 # Create a VideoCapture object
-cap = cv2.VideoCapture(0) 
+cap = cv2.VideoCapture(1) 
 
 if not cap.isOpened(): 
     print("Cannot open camera")

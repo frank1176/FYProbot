@@ -36,3 +36,6 @@ python fixNvPe.py --input c:\users\user\appdata\local\programs\python\python39\l
 python train.py --img 640 --batch 16 --epochs 100 --data coco128.yaml --weights yolov5s.pt --device 0
 python train.py --img 640 --batch 8 --epochs 2 --data coco128.yaml --weights yolov5s.pt 
 python train.py --img 640 --epochs 2 --data coco128.yaml --weights yolov5s.pt 
+
+
+python .\detect.py --source 0 --weights .\runs\train\exp15\weights\best.pt
