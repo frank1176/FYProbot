@@ -33,7 +33,7 @@ import os
 import platform
 import sys
 from pathlib import Path
-
+import math
 import torch
 
 FILE = Path(__file__).resolve()
@@ -150,6 +150,16 @@ def run(
             gn = torch.tensor(im0.shape)[[1, 0, 1, 0]]  # normalization gain whwh
             imc = im0.copy() if save_crop else im0  # for save_crop
             annotator = Annotator(im0, line_width=line_thickness, example=str(names))
+            
+
+            # Draw detected point
+            detectedpoint_x = 360
+            detectedpoint_y = 200
+            colorchange=(255, 133, 233)
+            radius=30
+            cv2.circle(im0, (detectedpoint_x, detectedpoint_y), radius, colorchange, -1)
+            
+
             if len(det):
                 # Rescale boxes from img_size to im0 size
                 det[:, :4] = scale_boxes(im.shape[2:], det[:, :4], im0.shape).round()
@@ -167,17 +177,38 @@ def run(
                         with open(f'{txt_path}.txt', 'a') as f:
                             f.write(('%g ' * len(line)).rstrip() % line + '\n')
                     
+                    
+                    # Draw detected point
+                    # detectedpoint_x = 360
+                    # detectedpoint_y = 200
+                    # colorchange=(255, 133, 233)
+                    # radius=30
+                    # cv2.circle(im0, (detectedpoint_x, detectedpoint_y), radius, colorchange, -1)
+
+
                     # Calculate the midpoint
                     x1, y1, x2, y2 = [int(x) for x in xyxy]
-                    # midpoint = ((x1 + x2) / 2, (y1 + y2) / 2)
-                    # print(f"The midpoint of the bounding box is: {midpoint}")
                     mid_x=int((x1+x2)/2)
                     mid_y=int((y1+y2)/2)
                     color = (0, 255, 0)  # green color for midpoint
                     thickness = 3  # dot thickness
                     cv2.circle(im0, (mid_x, mid_y), thickness, color, -1)  # -1 thickness makes circle filled
-                    line_frame = cv2.line(im0, (100, 0), (100, 640), (0, 255, 0), 2)
+                    # line_frame = cv2.line(im0, (100, 0), (100, 640), (0, 255, 0), 2)
                     
+                    distance = math.sqrt((detectedpoint_x - mid_x)**2 + (detectedpoint_y - mid_y)**2)
+                    if distance <= radius:
+                        print("Midpoint detected!")
+                        colorchange=(255, 255, 233) # New color of detected point.
+                        # Redraw detected point with new color.
+                        cv2.circle(im0, (detectedpoint_x, detectedpoint_y), radius, colorchange, -1)
+                   
+
+                    # if (mid_x,mid_y) == (360, 200):
+                    #     print("point touch")
+                    #     colorchange=(255, 255, 233)
+                    # else:
+                    #     colorchange=(255, 133, 233)
+
                     # label = f'Midpoint: ({mid_x:.2f}, {mid_y:.2f})'
                     # cv2.putText(im0, label, (mid_x, mid_y), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 255, 255), 2)
 
