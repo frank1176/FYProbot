@@ -156,7 +156,7 @@ def run(
             detectedpoint_x = 360
             detectedpoint_y = 200
             colorchange=(255, 133, 233)
-            radius=30
+            radius=20
             cv2.circle(im0, (detectedpoint_x, detectedpoint_y), radius, colorchange, -1)
             
 
@@ -178,13 +178,7 @@ def run(
                             f.write(('%g ' * len(line)).rstrip() % line + '\n')
                     
                     
-                    # Draw detected point
-                    # detectedpoint_x = 360
-                    # detectedpoint_y = 200
-                    # colorchange=(255, 133, 233)
-                    # radius=30
-                    # cv2.circle(im0, (detectedpoint_x, detectedpoint_y), radius, colorchange, -1)
-
+    
 
                     # Calculate the midpoint
                     x1, y1, x2, y2 = [int(x) for x in xyxy]
@@ -203,15 +197,7 @@ def run(
                         cv2.circle(im0, (detectedpoint_x, detectedpoint_y), radius, colorchange, -1)
                    
 
-                    # if (mid_x,mid_y) == (360, 200):
-                    #     print("point touch")
-                    #     colorchange=(255, 255, 233)
-                    # else:
-                    #     colorchange=(255, 133, 233)
-
-                    # label = f'Midpoint: ({mid_x:.2f}, {mid_y:.2f})'
-                    # cv2.putText(im0, label, (mid_x, mid_y), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 255, 255), 2)
-
+                    
 
                     if save_img or save_crop or view_img:  # Add bbox to image
                         c = int(cls)  # integer class
