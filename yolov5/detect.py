@@ -53,9 +53,7 @@ from utils.general import (LOGGER, Profile, check_file, check_img_size, check_im
 from utils.plots import Annotator, colors, save_one_box
 from utils.torch_utils import select_device, smart_inference_mode
 
-detections=np.empty((0, 5))
-mot_tracker = Sort(max_age=5, min_hits=3, iou_threshold=0.3)
-print("Sort object created successfully")
+
 @smart_inference_mode()
 def run(
         weights=ROOT / 'yolov5s.pt',  # model path or triton URL
@@ -117,6 +115,11 @@ def run(
         dataset = LoadImages(source, img_size=imgsz, stride=stride, auto=pt, vid_stride=vid_stride)
     vid_path, vid_writer = [None] * bs, [None] * bs
 
+############################SORT#########################
+    mot_tracker = Sort(max_age=5, min_hits=3, iou_threshold=0.3)
+    print("Sort object created successfully")
+#########################################################
+#     
     # Run inference
     model.warmup(imgsz=(1 if pt or model.triton else bs, 3, *imgsz))  # warmup
     seen, windows, dt = 0, [], (Profile(), Profile(), Profile())
@@ -141,6 +144,7 @@ def run(
         # pred = utils.general.apply_classifier(pred, classifier_model, im, im0s)
 
         # Process predictions
+        
         for i, det in enumerate(pred):  # per image
             seen += 1
             if webcam:  # batch_size >= 1
@@ -157,18 +161,33 @@ def run(
             imc = im0.copy() if save_crop else im0  # for save_crop
             annotator = Annotator(im0, line_width=line_thickness, example=str(names))
             
-
+            # detections=pred.numpy()
+            # tracking=mot_tracker.update(detections)
+            
             # Draw detected point
             detectedpoint_x = 360
             detectedpoint_y = 200
             colorchange=(255, 133, 233)
             radius=20
             cv2.circle(im0, (detectedpoint_x, detectedpoint_y), radius, colorchange, -1)
-            
-            
+
             if len(det):
                 # Rescale boxes from img_size to im0 size
                 det[:, :4] = scale_boxes(im.shape[2:], det[:, :4], im0.shape).round()
+
+
+                ######################################################################################
+                detections_for_sort = det[:, [0,1,2,3,4]].cpu().numpy()
+
+                track_bbs_ids = mot_tracker.update(detections_for_sort)
+                tracked_objects = []
+                for track_bb_id in track_bbs_ids:
+                    bbox = track_bb_id[:4]
+                    track_id = int(track_bb_id[-1])
+                    if track_id not in tracked_objects:
+                        tracked_objects.append(track_id)
+                print("Tracked objects IDs:", tracked_objects)
+                ######################################################################################
 
                 # Print results
                 for c in det[:, 5].unique():
@@ -185,30 +204,7 @@ def run(
                        
                         with open(f'{txt_path}.txt', 'a') as f:
                             f.write(('%g ' * len(line)).rstrip() % line + '\n')
-                    
-               
-                    # detections = np.array([*xyxy.cpu(), conf.cpu()])
-                    
-                    # for obj in tracked_objects:
-                    #     obj_id, *obj_box = obj
-                    #     print(f'Object ID: {obj_id}')
-                   
-                    # tensor = tensor.cpu()
-                    # numpy_array = tensor.numpy()
-                    # if torch.is_tensor(x1):
-                    #     x1 = x1.cpu().numpy()
-                    # y1 = y1.cpu().numpy()
-                    # x2 = x2.cpu().numpy()
-                    # y2 = y2.cpu().numpy()
-                    # conf = conf.cpu().numpy()
-                    
-                    # current = np.array([x1, y1, x2, y2, conf])
-                    
-                    # detections=np.vstack((detections,current))
-                    # tracked_objects = mot_tracker.update(detections)
-                    # print(f'Tracked objects: {tracked_objects}')
-    
-
+        
                     # Calculate the midpoint
                     
                     mid_x=int((x1+x2)/2)
@@ -217,7 +213,11 @@ def run(
                     thickness = 3  # dot thickness
                     cv2.circle(im0, (mid_x, mid_y), thickness, color, -1)  # -1 thickness makes circle filled
                     # line_frame = cv2.line(im0, (100, 0), (100, 640), (0, 255, 0), 2)
-                    
+                    ######################################################################################
+                    font = cv2.FONT_HERSHEY_SIMPLEX
+                    cv2.putText(im0, f"ID: {track_id}", (x1, y1 - 20), font, 0.6, (255, 255, 255), 2)
+                    ######################################################################################
+
                     distance = math.sqrt((detectedpoint_x - mid_x)**2 + (detectedpoint_y - mid_y)**2)
 
                     ###if detected change color and send mqtt
@@ -227,8 +227,6 @@ def run(
                         # Redraw detected point with new color.
                         cv2.circle(im0, (detectedpoint_x, detectedpoint_y), radius, colorchange, -1)
                         sendmqtt()
-                    
-                    
 
                     if save_img or save_crop or view_img:  # Add bbox to image
                         c = int(cls)  # integer class
@@ -236,10 +234,6 @@ def run(
                         annotator.box_label(xyxy, label, color=colors(c, True))
                     if save_crop:
                         save_one_box(xyxy, imc, file=save_dir / 'crops' / names[c] / f'{p.stem}.jpg', BGR=True)
-
-
-            # tracked_objects = mot_tracker.update(detections)
-            # print(f'Tracked objects: {tracked_objects}')
 
             # Stream results
             im0 = annotator.result()
