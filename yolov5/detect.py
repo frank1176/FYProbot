@@ -116,7 +116,7 @@ def run(
     vid_path, vid_writer = [None] * bs, [None] * bs
 
 ############################SORT#########################
-    mot_tracker = Sort(max_age=5, min_hits=3, iou_threshold=0.3)
+    tracker = Sort(max_age=20, min_hits=3, iou_threshold=0.3)
     print("Sort object created successfully")
 #########################################################
 #     
@@ -144,7 +144,6 @@ def run(
         # pred = utils.general.apply_classifier(pred, classifier_model, im, im0s)
 
         # Process predictions
-        
         for i, det in enumerate(pred):  # per image
             seen += 1
             if webcam:  # batch_size >= 1
@@ -160,10 +159,7 @@ def run(
             gn = torch.tensor(im0.shape)[[1, 0, 1, 0]]  # normalization gain whwh
             imc = im0.copy() if save_crop else im0  # for save_crop
             annotator = Annotator(im0, line_width=line_thickness, example=str(names))
-            
-            # detections=pred.numpy()
-            # tracking=mot_tracker.update(detections)
-            
+
             # Draw detected point
             detectedpoint_x = 360
             detectedpoint_y = 200
@@ -175,28 +171,15 @@ def run(
                 # Rescale boxes from img_size to im0 size
                 det[:, :4] = scale_boxes(im.shape[2:], det[:, :4], im0.shape).round()
 
-
-                ######################################################################################
-                detections_for_sort = det[:, [0,1,2,3,4]].cpu().numpy()
-
-                track_bbs_ids = mot_tracker.update(detections_for_sort)
-                tracked_objects = []
-                for track_bb_id in track_bbs_ids:
-                    bbox = track_bb_id[:4]
-                    track_id = int(track_bb_id[-1])
-                    if track_id not in tracked_objects:
-                        tracked_objects.append(track_id)
-                print("Tracked objects IDs:", tracked_objects)
-                ######################################################################################
-
                 # Print results
                 for c in det[:, 5].unique():
                     n = (det[:, 5] == c).sum()  # detections per class
                     s += f"{n} {names[int(c)]}{'s' * (n > 1)}, "  # add to string
 
                 # Write results
-                
+                detections=np.empty((0,5))
                 for *xyxy, conf, cls in reversed(det):
+                    
                     x1, y1, x2, y2 = [int(x) for x in xyxy]
                     if save_txt:  # Write to file
                         xywh = (xyxy2xywh(torch.tensor(xyxy).view(1, 4)) / gn).view(-1).tolist()  # normalized xywh
@@ -205,21 +188,27 @@ def run(
                         with open(f'{txt_path}.txt', 'a') as f:
                             f.write(('%g ' * len(line)).rstrip() % line + '\n')
         
+                    # tensor([x1,y1,x2,y2,conf]])
+                    detections_for_sort = np.array([
+                        x1.cpu().numpy() if torch.is_tensor(x1) else x1, 
+                        y1.cpu().numpy() if torch.is_tensor(y1) else y1, 
+                        x2.cpu().numpy() if torch.is_tensor(x2) else x2, 
+                        y2.cpu().numpy() if torch.is_tensor(y2) else y2, 
+                        conf.cpu().numpy() if torch.is_tensor(conf) else conf
+                    ])
+                    detections_for_sort = np.array([x1,y1,x2,y2,conf])
+                    detections=np.vstack((detections,detections_for_sort))
+
                     # Calculate the midpoint
-                    
                     mid_x=int((x1+x2)/2)
                     mid_y=int((y1+y2)/2)
                     color = (0, 255, 0)  # green color for midpoint
                     thickness = 3  # dot thickness
                     cv2.circle(im0, (mid_x, mid_y), thickness, color, -1)  # -1 thickness makes circle filled
                     # line_frame = cv2.line(im0, (100, 0), (100, 640), (0, 255, 0), 2)
-                    ######################################################################################
-                    font = cv2.FONT_HERSHEY_SIMPLEX
-                    cv2.putText(im0, f"ID: {track_id}", (x1, y1 - 20), font, 0.6, (255, 255, 255), 2)
-                    ######################################################################################
 
                     distance = math.sqrt((detectedpoint_x - mid_x)**2 + (detectedpoint_y - mid_y)**2)
-
+                    
                     ###if detected change color and send mqtt
                     if distance <= radius:
                         print("Midpoint detected!")
@@ -234,6 +223,15 @@ def run(
                         annotator.box_label(xyxy, label, color=colors(c, True))
                     if save_crop:
                         save_one_box(xyxy, imc, file=save_dir / 'crops' / names[c] / f'{p.stem}.jpg', BGR=True)
+
+                resultTracker=tracker.update(detections)
+
+                for result in resultTracker:
+                    x1,y1,x2,y2,track_id =result
+                    print(result)
+                    font = cv2.FONT_HERSHEY_SIMPLEX
+                    cv2.putText(im0, f"ID: {track_id}", (int(x1), int(y1 - 20)), font, 0.6, (255, 255, 255), 2)
+                  
 
             # Stream results
             im0 = annotator.result()
