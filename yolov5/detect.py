@@ -161,11 +161,12 @@ def run(
             annotator = Annotator(im0, line_width=line_thickness, example=str(names))
 
             # Draw detected point
-            detectedpoint_x = 360
-            detectedpoint_y = 200
-            colorchange=(255, 133, 233)
-            radius=20
-            cv2.circle(im0, (detectedpoint_x, detectedpoint_y), radius, colorchange, -1)
+            detectedpoints = [{"x": 360, "y": 300, "radius": 20, "color": (255, 133, 233)},
+                              {"x": 160, "y": 300, "radius": 20, "color": (255, 133, 233)}]
+            for point in detectedpoints:
+                cv2.circle(im0, (point["x"], point["y"]), point["radius"], point["color"], -1)
+
+            
 
             if len(det):
                 # Rescale boxes from img_size to im0 size
@@ -196,7 +197,7 @@ def run(
                         y2.cpu().numpy() if torch.is_tensor(y2) else y2, 
                         conf.cpu().numpy() if torch.is_tensor(conf) else conf
                     ])
-                    detections_for_sort = np.array([x1,y1,x2,y2,conf])
+                    # detections_for_sort = np.array([x1,y1,x2,y2,conf])
                     detections=np.vstack((detections,detections_for_sort))
 
                     # Calculate the midpoint
@@ -207,15 +208,18 @@ def run(
                     cv2.circle(im0, (mid_x, mid_y), thickness, color, -1)  # -1 thickness makes circle filled
                     # line_frame = cv2.line(im0, (100, 0), (100, 640), (0, 255, 0), 2)
 
-                    distance = math.sqrt((detectedpoint_x - mid_x)**2 + (detectedpoint_y - mid_y)**2)
                     
+
                     ###if detected change color and send mqtt
-                    if distance <= radius:
-                        print("Midpoint detected!")
-                        colorchange=(255, 255, 233) # New color of detected point.
-                        # Redraw detected point with new color.
-                        cv2.circle(im0, (detectedpoint_x, detectedpoint_y), radius, colorchange, -1)
-                        sendmqtt()
+                    for point in detectedpoints:
+                        #Calculate Euclidean distance between the midpoint and the detected point
+                        distance = math.sqrt((point["x"] - mid_x)**2 + (point["y"] - mid_y)**2)
+                        if distance <= point["radius"]:
+                            print("Midpoint detected!")
+                            point["color"] = (255, 255, 233) # New color of detected point.
+                            # Redraw detected point with new color.
+                            cv2.circle(im0, (point["x"], point["y"]), point["radius"], point["color"], -1)
+                            sendmqtt()
 
                     if save_img or save_crop or view_img:  # Add bbox to image
                         c = int(cls)  # integer class
@@ -298,7 +302,7 @@ def parse_opt():
     parser.add_argument('--project', default=ROOT / 'runs/detect', help='save results to project/name')
     parser.add_argument('--name', default='exp', help='save results to project/name')
     parser.add_argument('--exist-ok', action='store_true', help='existing project/name ok, do not increment')
-    parser.add_argument('--line-thickness', default=3, type=int, help='bounding box thickness (pixels)')
+    parser.add_argument('--line-thickness', default=2, type=int, help='bounding box thickness (pixels)')
     parser.add_argument('--hide-labels', default=False, action='store_true', help='hide labels')
     parser.add_argument('--hide-conf', default=False, action='store_true', help='hide confidences')
     parser.add_argument('--half', action='store_true', help='use FP16 half-precision inference')
