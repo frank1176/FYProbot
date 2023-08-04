@@ -21,7 +21,7 @@ except Exception as e:
 
 try:
     # Publish a message
-    res = client.publish("hi8", "Hello, World!")
+    res = client.publish("hi", "Hello, World!")
     
     if res.rc != mqtt.MQTT_ERR_SUCCESS:
         print(f"Error publishing message: {mqtt.error_string(res.rc)}")
