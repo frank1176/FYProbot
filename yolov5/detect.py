@@ -313,7 +313,9 @@ def parse_opt():
     print_args(vars(opt))
     return opt
 
+# count1=0
 def sendmqtt():
+    global count1
     credentials = pika.PlainCredentials('engineer', 'anakperantau')
     connection = pika.BlockingConnection(pika.ConnectionParameters(host='seafood.tuvbo.com',credentials=credentials,virtual_host='qa1'))
     channel = connection.channel()
@@ -322,8 +324,10 @@ def sendmqtt():
 
     ##create new queue
     channel.queue_declare(queue=queue, durable=True)
-
-    message = 'Hello RabbitMQ!111'
+    
+    # count1 += 1
+    message = 'Hello RabbitMQ!'
+    # message = 'Hello RabbitMQ! count: {%d}' % count1
     channel.basic_publish(exchange='', routing_key=queue, body=message)
 
 
