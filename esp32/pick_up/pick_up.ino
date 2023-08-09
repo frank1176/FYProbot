@@ -16,26 +16,22 @@ void setup() {
 
 
 void reset(){
-
+  int delayreset=2000;
   Serial.println("Resting....");
-
-  Serial2.print("#1P0000T0000\r\n"); //start
-  
+  // Serial2.print("#1P0000T0000\r\n"); //start
+  Serial2.print("#10P0000T1000\r\n");
   Serial2.print("#1P1500T0500\r\n");
-  
-  delay(2000);
+  delay(delayreset);
   Serial2.print("#2P1500T0500\r\n");
-  delay(2000);
-  Serial2.print("#3P2400T0500\r\n");
-  delay(2000);
-  Serial2.print("#4P1100T0500\r\n");
-  delay(2000);
+  delay(delayreset);
+  Serial2.print("#3P800T0500\r\n");
+  delay(delayreset);
+  Serial2.print("#4P2000T0500\r\n");
+  delay(delayreset);
   Serial2.print("#5P1500T0500\r\n");
-  delay(2000);
-  Serial2.print("#6P1500T0500\r\n");
-  
-
-  delay(2000);
+  delay(delayreset);
+  Serial2.print("#6P1700T0500\r\n");
+  delay(delayreset);
   // Serial2.print("#1P1500T0500\r\n");
   Serial.print("Rest end \n");
  
@@ -112,6 +108,59 @@ void grab2(){
   Serial2.print("#5P1500T0500\r\n"); //start
 
 }
+
+void point1(){
+  int delay1=2000;
+  Serial.println("Point1....");
+
+  Serial2.print("#10P0000T0000\r\n"); //start
+  Serial2.print("#1P1720T1000\r\n"); 
+  delay(delay1);
+  Serial2.print("#2P1700T1000\r\n"); 
+  delay(delay1);
+  Serial2.print("#3P1100T1000\r\n"); 
+  delay(delay1);
+  Serial2.print("#4P1900T1000\r\n"); 
+  delay(delay1);
+  Serial2.print("#2P2000T1000\r\n"); 
+  delay(delay1);
+  Serial2.print("#5P1800T1000\r\n"); 
+  delay(delay1);
+  Serial2.print("#2P2100T1000\r\n"); 
+  delay(delay1);
+  Serial2.print("#6P1400T1000\r\n"); 
+  
+  Serial.println("Point1 finish");
+
+}
+
+
+void plastic(){
+  int delayp=2000;
+  Serial.println("plastic start");
+  Serial2.print("#2P1500T1000\r\n"); 
+  delay(delayp);
+  Serial2.print("#1P1500T1000\r\n");
+  delay(delayp);
+  Serial2.print("#3P2000T1000\r\n");
+  delay(delayp);
+  Serial2.print("#4P1000T1000\r\n");
+  delay(delayp);
+  Serial2.print("#5P1500T1000\r\n");
+  delay(delayp);
+  Serial2.print("#4P1000T1000\r\n");
+  delay(delayp);
+  Serial2.print("#4P1500T1000\r\n");
+  delay(delayp);
+  Serial2.print("#3P1500T1000\r\n"); 
+  delay(delayp);
+  delay(delayp);
+  Serial2.print("#2P600T1000\r\n"); 
+  delay(delayp);
+  Serial2.print("#6P1700T1000\r\n"); 
+
+  Serial.println("plastic finish");
+}
 void loop() {
   // put your main code here, to run repeatedly:
   Serial.println("Enter your selection:");
@@ -119,6 +168,8 @@ void loop() {
   Serial.println("2. stop()");
   Serial.println("3. Grab1()");
   Serial.println("4. Grab2()");
+  Serial.println("5. Point1()");
+  Serial.println("6. Plastic()");
   while (Serial.available() == 0) {}
   input = Serial.parseInt();
   Serial.read();
@@ -135,6 +186,12 @@ void loop() {
       break;
     case 4:
       grab2();
+      break;
+    case 5:
+      point1();
+      break;
+    case 6:
+      plastic();
       break;
     default:
       Serial.println("Invalid selection. Please enter 1-3.");

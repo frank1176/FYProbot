@@ -4,6 +4,7 @@
 
 int num;
 int pinnum;
+int feedback_position = 0;
 char out[20];
 
 void setup() {
@@ -48,28 +49,28 @@ for (int i = 0; i < 2; i++) { // Loop twice
   Serial.println(out);
   Serial2.println(out);
   Serial.println("end\n");
+
+  
 }
 
+
 void reset(){
-
+  int delayreset=2000;
   Serial.println("Resting....");
-
-  Serial2.print("#1P0000T0000\r\n"); //start
-  
+  // Serial2.print("#1P0000T0000\r\n"); //start
+  Serial2.print("#10P0000T1000\r\n");
   Serial2.print("#1P1500T0500\r\n");
-  delay(2000);
-  Serial2.print("#2P1400T0500\r\n");
-  delay(2000);
-  Serial2.print("#3P2480T0500\r\n");
-  delay(2000);
-  Serial2.print("#4P750T0500\r\n");
-  delay(2000);
+  delay(delayreset);
+  Serial2.print("#2P1500T0500\r\n");
+  delay(delayreset);
+  Serial2.print("#3P800T0500\r\n");
+  delay(delayreset);
+  Serial2.print("#4P2000T0500\r\n");
+  delay(delayreset);
   Serial2.print("#5P1500T0500\r\n");
-  delay(2000);
-  Serial2.print("#6P1500T0500\r\n");
-  
-
-  delay(2000);
+  delay(delayreset);
+  Serial2.print("#6P1700T0500\r\n");
+  delay(delayreset);
   // Serial2.print("#1P1500T0500\r\n");
   Serial.print("Rest end \n");
  

@@ -40,6 +40,10 @@ import pika
 import numpy as np
 from sort import Sort
 
+import time
+
+last_mqtt_send_time = 0
+
 FILE = Path(__file__).resolve()
 ROOT = FILE.parents[0]  # YOLOv5 root directory
 if str(ROOT) not in sys.path:
@@ -219,7 +223,10 @@ def run(
                             point["color"] = (255, 255, 233) # New color of detected point.
                             # Redraw detected point with new color.
                             cv2.circle(im0, (point["x"], point["y"]), point["radius"], point["color"], -1)
-                            sendmqtt()
+                            current_time = time.time()
+                            if current_time - last_mqtt_send_time >= 30:  # Check if at least 1 second has passed since last MQTT message
+                                sendmqtt()
+                                last_mqtt_send_time = current_time  # Update the time of last MQTT message
 
                     if save_img or save_crop or view_img:  # Add bbox to image
                         c = int(cls)  # integer class
