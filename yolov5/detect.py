@@ -42,7 +42,7 @@ from sort import Sort
 
 import time
 
-last_mqtt_send_time = 0
+# last_mqtt_send_time = 0
 
 FILE = Path(__file__).resolve()
 ROOT = FILE.parents[0]  # YOLOv5 root directory
@@ -165,10 +165,11 @@ def run(
             annotator = Annotator(im0, line_width=line_thickness, example=str(names))
 
             # Draw detected point
-            detectedpoints = [{"x": 360, "y": 300, "radius": 20, "color": (255, 133, 233)},
-                              {"x": 160, "y": 300, "radius": 20, "color": (255, 133, 233)}]
+            detectedpoints = [{"x": 360, "y": 300, "radius": 30, "color": (255, 133, 233)},
+                              {"x": 166+0, "y": 300, "radius": 30, "color": (255, 133, 233)},
+                              {"x": 450, "y": 360, "radius": 30, "color": (255, 133, 233)}]
             for point in detectedpoints:
-                cv2.circle(im0, (point["x"], point["y"]), point["radius"], point["color"], -1)
+                cv2.circle(im0, (point["x"], point["y"]), point["radius"], point["color"], 3)
 
             
 
@@ -208,25 +209,25 @@ def run(
                     mid_x=int((x1+x2)/2)
                     mid_y=int((y1+y2)/2)
                     color = (0, 255, 0)  # green color for midpoint
-                    thickness = 3  # dot thickness
+                    thickness = 10  # dot thickness
                     cv2.circle(im0, (mid_x, mid_y), thickness, color, -1)  # -1 thickness makes circle filled
                     # line_frame = cv2.line(im0, (100, 0), (100, 640), (0, 255, 0), 2)
 
                     
 
-                    ###if detected change color and send mqtt
-                    for point in detectedpoints:
-                        #Calculate Euclidean distance between the midpoint and the detected point
-                        distance = math.sqrt((point["x"] - mid_x)**2 + (point["y"] - mid_y)**2)
-                        if distance <= point["radius"]:
-                            print("Midpoint detected!")
-                            point["color"] = (255, 255, 233) # New color of detected point.
-                            # Redraw detected point with new color.
-                            cv2.circle(im0, (point["x"], point["y"]), point["radius"], point["color"], -1)
-                            current_time = time.time()
-                            if current_time - last_mqtt_send_time >= 30:  # Check if at least 1 second has passed since last MQTT message
-                                sendmqtt()
-                                last_mqtt_send_time = current_time  # Update the time of last MQTT message
+                    # ###if detected change color and send mqtt
+                    # for point in detectedpoints:
+                    #     #Calculate Euclidean distance between the midpoint and the detected point
+                    #     distance = math.sqrt((point["x"] - mid_x)**2 + (point["y"] - mid_y)**2)
+                    #     if distance <= point["radius"]:
+                    #         print("Midpoint detected!")
+                    #         point["color"] = (255, 255, 233) # New color of detected point.
+                    #         # Redraw detected point with new color.
+                    #         cv2.circle(im0, (point["x"], point["y"]), point["radius"], point["color"], -1)
+                    #         # current_time = time.time()
+                    #         # if current_time - last_mqtt_send_time >= 30:  # Check if at least 1 second has passed since last MQTT message
+                    #         #     sendmqtt()
+                    #         #     last_mqtt_send_time = current_time  # Update the time of last MQTT message
 
                     if save_img or save_crop or view_img:  # Add bbox to image
                         c = int(cls)  # integer class
@@ -242,6 +243,23 @@ def run(
                     print(result)
                     font = cv2.FONT_HERSHEY_SIMPLEX
                     cv2.putText(im0, f"ID: {track_id}", (int(x1), int(y1 - 20)), font, 0.6, (255, 255, 255), 2)
+                
+                 ###if detected change color and send mqtt
+                for point in detectedpoints:
+                    #Calculate Euclidean distance between the midpoint and the detected point
+                    distance = math.sqrt((point["x"] - mid_x)**2 + (point["y"] - mid_y)**2)
+                    if distance <= point["radius"]:
+                        print("Midpoint detected!")
+                        point["color"] = (255, 255, 233) # New color of detected point.
+                        # Redraw detected point with new color.
+                        cv2.circle(im0, (point["x"], point["y"]), point["radius"], point["color"], -1)
+                        # tograb(track_id)
+                        
+                        # current_time = time.time()
+                        # if current_time - last_mqtt_send_time >= 30:  # Check if at least 1 second has passed since last MQTT message
+                        #     sendmqtt()
+                        #     last_mqtt_send_time = current_time  # Update the time of last MQTT message
+
                   
 
             # Stream results
@@ -322,7 +340,7 @@ def parse_opt():
 
 # count1=0
 def sendmqtt():
-    global count1
+    
     credentials = pika.PlainCredentials('engineer', 'anakperantau')
     connection = pika.BlockingConnection(pika.ConnectionParameters(host='seafood.tuvbo.com',credentials=credentials,virtual_host='qa1'))
     channel = connection.channel()
@@ -343,6 +361,10 @@ def sendmqtt():
     # Close connection
     connection.close()
 
+def tograb(num):
+    print("grabbing %d",num)
+
+    # pass
 
 def main(opt):
     check_requirements(ROOT / 'requirements.txt', exclude=('tensorboard', 'thop'))
