@@ -45,7 +45,7 @@ for (int i = 0; i < 2; i++) { // Loop twice
   Serial.println(num);
   Serial.read();
   Serial.print("start\n");
-  sprintf(out, "#%dP%dT0500\r\n", pinnum,num);
+  sprintf(out, "#%dP%dT1000\r\n", pinnum,num);
   Serial.println(out);
   Serial2.println(out);
   Serial.println("end\n");
@@ -75,3 +75,26 @@ void reset(){
   Serial.print("Rest end \n");
  
 }
+
+
+// void reset(){
+//   int delayreset=2000;
+//   Serial.println("Resting....");
+//   // Serial2.print("#1P0000T0000\r\n"); //start
+//   Serial2.print("#10P0000T1000\r\n");
+//   Serial2.print("#1P1500T0500\r\n");
+//   delay(delayreset);
+//   Serial2.print("#2P1500T0500\r\n");
+//   delay(delayreset);
+//   Serial2.print("#3P1500T0500\r\n");
+//   delay(delayreset);
+//   Serial2.print("#4P1500T0500\r\n");
+//   delay(delayreset);
+//   Serial2.print("#5P1500T0500\r\n");
+//   delay(delayreset);
+//   Serial2.print("#6P1500T0500\r\n");
+//   delay(delayreset);
+//   // Serial2.print("#1P1500T0500\r\n");
+//   Serial.print("Rest end \n");
+ 
+// }

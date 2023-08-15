@@ -144,23 +144,61 @@ void plastic(){
   delay(delayp);
   Serial2.print("#3P2000T1000\r\n");
   delay(delayp);
-  Serial2.print("#4P1000T1000\r\n");
+  Serial2.print("#4P1500T1000\r\n");
   delay(delayp);
   Serial2.print("#5P1500T1000\r\n");
   delay(delayp);
-  Serial2.print("#4P1000T1000\r\n");
-  delay(delayp);
-  Serial2.print("#4P1500T1000\r\n");
-  delay(delayp);
   Serial2.print("#3P1500T1000\r\n"); 
   delay(delayp);
-  delay(delayp);
-  Serial2.print("#2P600T1000\r\n"); 
+  Serial2.print("#2P700T1000\r\n"); 
   delay(delayp);
   Serial2.print("#6P1700T1000\r\n"); 
 
   Serial.println("plastic finish");
 }
+
+void metal(){
+  int delaym=2000;
+  Serial.println("metal start");
+  Serial2.print("#2P1500T1000\r\n"); 
+  delay(delaym);
+  Serial2.print("#1P1700T1000\r\n");
+  delay(delaym);
+  Serial2.print("#3P2000T1000\r\n");
+  delay(delaym);
+  Serial2.print("#4P1500T1000\r\n");
+  delay(delaym);
+  Serial2.print("#5P1500T1000\r\n");
+  delay(delaym);
+  Serial2.print("#3P1500T1000\r\n"); 
+  delay(delaym);
+  Serial2.print("#2P700T1000\r\n"); 
+  delay(delaym);
+  Serial2.print("#6P1700T1000\r\n"); 
+  Serial.println("metal finish");
+}
+
+void paper(){
+  int delayp=2000;
+  Serial.println("metal start");
+  Serial2.print("#2P1500T1000\r\n"); 
+  delay(delayp);
+  Serial2.print("#1P1200T1000\r\n");
+  delay(delayp);
+  Serial2.print("#3P2000T1000\r\n");
+  delay(delayp);
+  Serial2.print("#4P1500T1000\r\n");
+  delay(delayp);
+  Serial2.print("#5P1500T1000\r\n");
+  delay(delayp);
+  Serial2.print("#3P1500T1000\r\n"); 
+  delay(delayp);
+  Serial2.print("#2P700T1000\r\n"); 
+  delay(delayp);
+  Serial2.print("#6P1700T1000\r\n"); 
+  Serial.println("paper finish");
+}
+
 void loop() {
   // put your main code here, to run repeatedly:
   Serial.println("Enter your selection:");
@@ -170,6 +208,8 @@ void loop() {
   Serial.println("4. Grab2()");
   Serial.println("5. Point1()");
   Serial.println("6. Plastic()");
+  Serial.println("7. Metal()");
+  Serial.println("8. Paper()");
   while (Serial.available() == 0) {}
   input = Serial.parseInt();
   Serial.read();
@@ -193,8 +233,14 @@ void loop() {
     case 6:
       plastic();
       break;
+    case 7:
+      metal();
+      break;
+    case 8:
+      paper();
+      break; 
     default:
-      Serial.println("Invalid selection. Please enter 1-3.");
+      Serial.println("Invalid selection. Please enter 1-8.");
       break;
   }
   delay(1000); // Delay for 1 second

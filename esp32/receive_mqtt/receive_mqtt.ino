@@ -88,3 +88,12 @@ void point1(){
   Serial.println("grabing");
   Serial.println("ending");
 }
+void point2(){
+  Serial.println("moving");
+  Serial.println("grabing");
+  Serial.println("ending");
+}
+
+void point3(){
+
+}
