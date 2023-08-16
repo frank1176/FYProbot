@@ -168,12 +168,17 @@ def run(
             detectedpoints = [{"x": 300, "y": 300, "radius": 30, "color": (255, 133, 233)},
                               {"x": 100, "y": 300, "radius": 30, "color": (255, 133, 233)},
                               {"x": 500, "y": 300, "radius": 30, "color": (255, 133, 233)}]
+            # detectedpoints = [{"x": 300, "y": 300, "radius": 30, "color": (255, 133, 233), "track_ids": []},
+            #                   {"x": 100, "y": 300, "radius": 30, "color": (255, 133, 233), "track_ids": []},
+            #                   {"x": 500, "y": 300, "radius": 30, "color": (255, 133, 233), "track_ids": []}]
+
             for point in detectedpoints:
                 cv2.circle(im0, (point["x"], point["y"]), point["radius"], point["color"], 3)
 
             # Draw Line 
             cv2.line(im0,(170,170),(400,170), (0, 255, 0), 2)
-
+            
+            midpoints=[]
             if len(det):
                 # Rescale boxes from img_size to im0 size
                 det[:, :4] = scale_boxes(im.shape[2:], det[:, :4], im0.shape).round()
@@ -210,26 +215,14 @@ def run(
                     # Calculate the midpoint
                     mid_x=int((x1+x2)/2)
                     mid_y=int((y1+y2)/2)
+                    Object_name=names[int(cls)]
+                    midpoints.append((mid_x,mid_y,Object_name))
                     color = (0, 255, 0)  # green color for midpoint
                     thickness = 10  # dot thickness
                     cv2.circle(im0, (mid_x, mid_y), thickness, color, -1)  # -1 thickness makes circle filled
                     # line_frame = cv2.line(im0, (100, 0), (100, 640), (0, 255, 0), 2)
 
-                    
 
-                    # ###if detected change color and send mqtt
-                    # for point in detectedpoints:
-                    #     #Calculate Euclidean distance between the midpoint and the detected point
-                    #     distance = math.sqrt((point["x"] - mid_x)**2 + (point["y"] - mid_y)**2)
-                    #     if distance <= point["radius"]:
-                    #         print("Midpoint detected!")
-                    #         point["color"] = (255, 255, 233) # New color of detected point.
-                    #         # Redraw detected point with new color.
-                    #         cv2.circle(im0, (point["x"], point["y"]), point["radius"], point["color"], -1)
-                    #         # current_time = time.time()
-                    #         # if current_time - last_mqtt_send_time >= 30:  # Check if at least 1 second has passed since last MQTT message
-                    #         #     sendmqtt()
-                    #         #     last_mqtt_send_time = current_time  # Update the time of last MQTT message
 
                     if save_img or save_crop or view_img:  # Add bbox to image
                         c = int(cls)  # integer class
@@ -242,25 +235,31 @@ def run(
 
                 for result in resultTracker:
                     x1,y1,x2,y2,track_id =result
+                    print("---------------------------------------")
                     print(result)
+                    print("---------------------------------------")
+
                     font = cv2.FONT_HERSHEY_SIMPLEX
                     cv2.putText(im0, f"ID: {track_id}", (int(x1), int(y1 - 20)), font, 0.6, (255, 255, 255), 2)
                 
                  ###if detected change color and send mqtt
-                for point in detectedpoints:
-                    #Calculate Euclidean distance between the midpoint and the detected point
-                    distance = math.sqrt((point["x"] - mid_x)**2 + (point["y"] - mid_y)**2)
-                    if distance <= point["radius"]:
-                        print("Midpoint detected!")
-                        point["color"] = (255, 255, 233) # New color of detected point.
-                        # Redraw detected point with new color.
-                        cv2.circle(im0, (point["x"], point["y"]), point["radius"], point["color"], -1)
-                        # tograb(track_id)
-                        
-                        # current_time = time.time()
-                        # if current_time - last_mqtt_send_time >= 30:  # Check if at least 1 second has passed since last MQTT message
-                        #     sendmqtt()
-                        #     last_mqtt_send_time = current_time  # Update the time of last MQTT message
+                for mid_x, mid_y, Object_name in midpoints:
+                    for point in detectedpoints:
+                        #Calculate Euclidean distance between the midpoint and the detected point
+                        distance = math.sqrt((point["x"] - mid_x)**2 + (point["y"] - mid_y)**2)
+                        if distance <= point["radius"]:
+                            print("Midpoint detected!")
+                            point["color"] = (255, 255, 233) # New color of detected point.
+                            # Redraw detected point with new color.
+                            cv2.circle(im0, (point["x"], point["y"]), point["radius"], point["color"], -1)
+                            # tograb(track_id)
+                            print("245 lines id:",track_id)
+                            print("246 lines name:",Object_name)
+                            # print("246 lines name:",names[int(c)+1])
+                            # current_time = time.time()
+                            # if current_time - last_mqtt_send_time >= 30:  # Check if at least 1 second has passed since last MQTT message
+                            #     sendmqtt()
+                            #     last_mqtt_send_time = current_time  # Update the time of last MQTT message
 
                   
 
@@ -295,7 +294,10 @@ def run(
 
         # Print time (inference-only)
         LOGGER.info(f"{s}{'' if len(det) else '(no detections), '}{dt[1].dt * 1E3:.1f}ms")
-        # print(len(det))
+        # print("284 line",len(det))
+        # # print("285 line",dt[1].dt)
+        # print("286 line",names[int(c)])
+        # print("286 line",names[int(c)+1])
 
     # Print results
     t = tuple(x.t / seen * 1E3 for x in dt)  # speeds per image
