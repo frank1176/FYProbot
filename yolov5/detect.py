@@ -187,7 +187,6 @@ def run(
                 for c in det[:, 5].unique():
                     n = (det[:, 5] == c).sum()  # detections per class
                     s += f"{n} {names[int(c)]}{'s' * (n > 1)}, "  # add to string
-                    
 
                 # Write results
                 detections=np.empty((0,5))
@@ -216,7 +215,13 @@ def run(
                     mid_x=int((x1+x2)/2)
                     mid_y=int((y1+y2)/2)
                     Object_name=names[int(cls)]
-                    midpoints.append((mid_x,mid_y,Object_name))
+                    dict1={}
+                    dict1['mid_x']=mid_x
+                    dict1['mid_y']=mid_y
+                    dict1['Object_name']=Object_name
+                    midpoints.append(dict1)
+                    
+                    # midpoints.append((mid_x,mid_y,Object_name))
                     color = (0, 255, 0)  # green color for midpoint
                     thickness = 10  # dot thickness
                     cv2.circle(im0, (mid_x, mid_y), thickness, color, -1)  # -1 thickness makes circle filled
@@ -232,35 +237,48 @@ def run(
                         save_one_box(xyxy, imc, file=save_dir / 'crops' / names[c] / f'{p.stem}.jpg', BGR=True)
 
                 resultTracker=tracker.update(detections)
+                print("---------------------------------------")
+                print("before add track id")
+                print(midpoints)
+                print(resultTracker)
 
+                print("---------------------------------------")
+                midpoint_index = 0
                 for result in resultTracker:
                     x1,y1,x2,y2,track_id =result
-                    print("---------------------------------------")
-                    print(result)
-                    print("---------------------------------------")
-
+                    if midpoint_index < len(midpoints):
+                        midpoints[midpoint_index]['track_id'] = track_id
+                        midpoint_index += 1 
                     font = cv2.FONT_HERSHEY_SIMPLEX
                     cv2.putText(im0, f"ID: {track_id}", (int(x1), int(y1 - 20)), font, 0.6, (255, 255, 255), 2)
                 
+                
+                print("---------------------------------------")
+                print("after add track id")
+                print(midpoints)
+                print("---------------------------------------")
                  ###if detected change color and send mqtt
-                for mid_x, mid_y, Object_name in midpoints:
+                for mid in midpoints:
                     for point in detectedpoints:
                         #Calculate Euclidean distance between the midpoint and the detected point
-                        distance = math.sqrt((point["x"] - mid_x)**2 + (point["y"] - mid_y)**2)
+                        distance = math.sqrt((point["x"] - mid['mid_x'])**2 + (point["y"] - mid['mid_y'])**2)
                         if distance <= point["radius"]:
                             print("Midpoint detected!")
                             point["color"] = (255, 255, 233) # New color of detected point.
                             # Redraw detected point with new color.
                             cv2.circle(im0, (point["x"], point["y"]), point["radius"], point["color"], -1)
                             # tograb(track_id)
-                            print("245 lines id:",track_id)
-                            print("246 lines name:",Object_name)
+                            # print("245 lines id:",mid['track_id'])
+                            print("245 lines id:", mid['track_id'] if 'track_id' in mid else "No track_id found")
+
+                            print("246 lines name:",mid['Object_name'])
+                            
                             # print("246 lines name:",names[int(c)+1])
                             # current_time = time.time()
                             # if current_time - last_mqtt_send_time >= 30:  # Check if at least 1 second has passed since last MQTT message
                             #     sendmqtt()
                             #     last_mqtt_send_time = current_time  # Update the time of last MQTT message
-
+                midpoints.clear()
                   
 
             # Stream results
