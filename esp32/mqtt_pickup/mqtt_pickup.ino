@@ -9,7 +9,7 @@ int input;
 const char *ssid = "siewseng@unifi"; // Enter your WiFi name
 const char *password = "69983155";  // Enter WiFi password
 const char* mqtt_server = "seafood.tuvbo.com";
-const char* mqtt_topic     = "point1"; // TOPIC (MUST BE UNIQUE)
+const char* mqtt_topic     = "hi"; // TOPIC (MUST BE UNIQUE)
 int         mqtt_port      = 1883;
 const char* mqtt_username  = "engineer";
 const char* mqtt_password  = "anakperantau";
@@ -28,15 +28,6 @@ void setup() {
   client.setCallback(callback);
   client.subscribe(mqtt_topic);
   client.publish(mqtt_topic, "hi fyp waimin");
-  
-}
-
-void loop() {
-  // put your main code here, to run repeatedly:
-   if (!client.connected()) {
-    reconnect();
-  }
-  client.loop();
   
 }
 
@@ -71,6 +62,7 @@ void reconnect() {
     }
   }
 }
+
 void callback(char *topic, byte *payload, unsigned int length) {
     Serial.print("Message arrived in topic: ");
     Serial.println(topic);
@@ -112,17 +104,17 @@ void reset(){
   Serial.println("Resting....");
   // Serial2.print("#1P0000T0000\r\n"); //start
   Serial2.print("#10P0000T1000\r\n");
-  Serial2.print("#1P1500T0500\r\n");
+  Serial2.print("#1P1500T1000\r\n");
   delay(delayreset);
-  Serial2.print("#2P1500T0500\r\n");
+  Serial2.print("#2P1500T1000\r\n");
   delay(delayreset);
-  Serial2.print("#3P800T0500\r\n");
+  Serial2.print("#3P800T1000\r\n");
   delay(delayreset);
-  Serial2.print("#4P2000T0500\r\n");
+  Serial2.print("#4P2000T1000\r\n");
   delay(delayreset);
-  Serial2.print("#5P1500T0500\r\n");
+  Serial2.print("#5P1500T1000\r\n");
   delay(delayreset);
-  Serial2.print("#6P1700T0500\r\n");
+  Serial2.print("#6P1700T1000\r\n");
   delay(delayreset);
   // Serial2.print("#1P1500T0500\r\n");
   Serial.print("Rest end \n");
@@ -195,3 +187,14 @@ void paper(){
   Serial2.print("#6P1700T1000\r\n"); 
   Serial.println("paper finish");
 }
+
+
+void loop() {
+  // put your main code here, to run repeatedly:
+   if (!client.connected()) {
+    reconnect();
+  }
+  client.loop();
+  
+}
+

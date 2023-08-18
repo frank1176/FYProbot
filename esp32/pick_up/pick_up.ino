@@ -20,17 +20,17 @@ void reset(){
   Serial.println("Resting....");
   // Serial2.print("#1P0000T0000\r\n"); //start
   Serial2.print("#10P0000T1000\r\n");
-  Serial2.print("#1P1500T0500\r\n");
+  Serial2.print("#1P1500T1000\r\n");
   delay(delayreset);
-  Serial2.print("#2P1500T0500\r\n");
+  Serial2.print("#2P1500T1000\r\n");
   delay(delayreset);
-  Serial2.print("#3P800T0500\r\n");
+  Serial2.print("#3P800T1000\r\n");
   delay(delayreset);
-  Serial2.print("#4P2000T0500\r\n");
+  Serial2.print("#4P2000T1000\r\n");
   delay(delayreset);
-  Serial2.print("#5P1500T0500\r\n");
+  Serial2.print("#5P1500T1000\r\n");
   delay(delayreset);
-  Serial2.print("#6P1700T0500\r\n");
+  Serial2.print("#6P1700T1000\r\n");
   delay(delayreset);
   // Serial2.print("#1P1500T0500\r\n");
   Serial.print("Rest end \n");

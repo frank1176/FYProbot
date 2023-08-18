@@ -35,7 +35,7 @@ from pathlib import Path
 
 import math
 import torch
-import pika
+import paho.mqtt.client as mqtt
 
 import numpy as np
 from sort import Sort
@@ -57,7 +57,7 @@ from utils.general import (LOGGER, Profile, check_file, check_img_size, check_im
 from utils.plots import Annotator, colors, save_one_box
 from utils.torch_utils import select_device, smart_inference_mode
 
-
+waitinglist=[]
 @smart_inference_mode()
 def run(
         weights=ROOT / 'yolov5s.pt',  # model path or triton URL
@@ -168,9 +168,6 @@ def run(
             detectedpoints = [{"x": 300, "y": 300, "radius": 30, "color": (255, 133, 233)},
                               {"x": 100, "y": 300, "radius": 30, "color": (255, 133, 233)},
                               {"x": 500, "y": 300, "radius": 30, "color": (255, 133, 233)}]
-            # detectedpoints = [{"x": 300, "y": 300, "radius": 30, "color": (255, 133, 233), "track_ids": []},
-            #                   {"x": 100, "y": 300, "radius": 30, "color": (255, 133, 233), "track_ids": []},
-            #                   {"x": 500, "y": 300, "radius": 30, "color": (255, 133, 233), "track_ids": []}]
 
             for point in detectedpoints:
                 cv2.circle(im0, (point["x"], point["y"]), point["radius"], point["color"], 3)
@@ -225,7 +222,7 @@ def run(
                     color = (0, 255, 0)  # green color for midpoint
                     thickness = 10  # dot thickness
                     cv2.circle(im0, (mid_x, mid_y), thickness, color, -1)  # -1 thickness makes circle filled
-                    # line_frame = cv2.line(im0, (100, 0), (100, 640), (0, 255, 0), 2)
+                
 
 
 
@@ -237,12 +234,12 @@ def run(
                         save_one_box(xyxy, imc, file=save_dir / 'crops' / names[c] / f'{p.stem}.jpg', BGR=True)
 
                 resultTracker=tracker.update(detections)
-                print("---------------------------------------")
-                print("before add track id")
-                print(midpoints)
-                print(resultTracker)
+                # print("---------------------------------------")
+                # print("before add track id")
+                # print(midpoints)
+                # print(resultTracker)
 
-                print("---------------------------------------")
+                # print("---------------------------------------")
                 midpoint_index = 0
                 for result in resultTracker:
                     x1,y1,x2,y2,track_id =result
@@ -253,31 +250,29 @@ def run(
                     cv2.putText(im0, f"ID: {track_id}", (int(x1), int(y1 - 20)), font, 0.6, (255, 255, 255), 2)
                 
                 
-                print("---------------------------------------")
-                print("after add track id")
-                print(midpoints)
-                print("---------------------------------------")
+                # print("---------------------------------------")
+                # print("after add track id")
+                # print(midpoints)
+                # print("---------------------------------------")
+                
+                
                  ###if detected change color and send mqtt
                 for mid in midpoints:
                     for point in detectedpoints:
                         #Calculate Euclidean distance between the midpoint and the detected point
                         distance = math.sqrt((point["x"] - mid['mid_x'])**2 + (point["y"] - mid['mid_y'])**2)
                         if distance <= point["radius"]:
+                            dict3={}
                             print("Midpoint detected!")
-                            point["color"] = (255, 255, 233) # New color of detected point.
+                            point["color"] = (255, 255, 233) 
                             # Redraw detected point with new color.
                             cv2.circle(im0, (point["x"], point["y"]), point["radius"], point["color"], -1)
-                            # tograb(track_id)
-                            # print("245 lines id:",mid['track_id'])
-                            print("245 lines id:", mid['track_id'] if 'track_id' in mid else "No track_id found")
-
-                            print("246 lines name:",mid['Object_name'])
-                            
-                            # print("246 lines name:",names[int(c)+1])
-                            # current_time = time.time()
-                            # if current_time - last_mqtt_send_time >= 30:  # Check if at least 1 second has passed since last MQTT message
-                            #     sendmqtt()
-                            #     last_mqtt_send_time = current_time  # Update the time of last MQTT message
+                            dict3['track_id']=mid['track_id'] if 'track_id' in mid else "No track_id found"
+                            dict3['Object_name']=mid['Object_name']
+                            waitinglist.append(dict3)
+                print(waitinglist)
+                tograb()
+                waitinglist.clear()
                 midpoints.clear()
                   
 
@@ -311,12 +306,8 @@ def run(
                     vid_writer[i].write(im0)
 
         # Print time (inference-only)
-        LOGGER.info(f"{s}{'' if len(det) else '(no detections), '}{dt[1].dt * 1E3:.1f}ms")
-        # print("284 line",len(det))
-        # # print("285 line",dt[1].dt)
-        # print("286 line",names[int(c)])
-        # print("286 line",names[int(c)+1])
-
+        # LOGGER.info(f"{s}{'' if len(det) else '(no detections), '}{dt[1].dt * 1E3:.1f}ms")
+     
     # Print results
     t = tuple(x.t / seen * 1E3 for x in dt)  # speeds per image
     LOGGER.info(f'Speed: %.1fms pre-process, %.1fms inference, %.1fms NMS per image at shape {(1, 3, *imgsz)}' % t)
@@ -362,32 +353,84 @@ def parse_opt():
     return opt
 
 # count1=0
-def sendmqtt():
-    
-    credentials = pika.PlainCredentials('engineer', 'anakperantau')
-    connection = pika.BlockingConnection(pika.ConnectionParameters(host='seafood.tuvbo.com',credentials=credentials,virtual_host='qa1'))
-    channel = connection.channel()
+def send_mqtt(topic, message):
 
-    queue='test'
+    def on_log(client, userdata, level, buf):
+        print("log: ",buf)
 
-    ##create new queue
-    channel.queue_declare(queue=queue, durable=True)
-    
-    # count1 += 1
-    message = 'Hello RabbitMQ!'
-    # message = 'Hello RabbitMQ! count: {%d}' % count1
-    channel.basic_publish(exchange='', routing_key=queue, body=message)
+    # Create a MQTT client object
+    client = mqtt.Client()
+
+    # Enable logging
+    client.on_log = on_log
+
+    # Set your username and password
+    client.username_pw_set("engineer", "anakperantau")
+
+    try:
+        # Connect to the MQTT broker
+        client.connect("seafood.tuvbo.com", 1883, 60)
+    except Exception as e:
+        print("Error connecting to MQTT Broker: ", e)
+        exit(1)
+
+    try:
+        # Publish a message
+        res = client.publish("hi", "Hello, World!")
+        
+        if res.rc != mqtt.MQTT_ERR_SUCCESS:
+            print(f"Error publishing message: {mqtt.error_string(res.rc)}")
+    except Exception as e:
+        print("Error publishing message: ", e)
+
+    # Disconnect from the broker
+    # client.disconnect()
+
+def subscribe_mqtt():
+    # The callback for when the client receives a CONNECT response from the server.
+    def on_connect(client, userdata, flags, rc):
+        print("Connected with result code "+str(rc))
+
+        # Subscribing in on_connect() means that if we lose the connection and
+        # reconnect then subscriptions will be renewed.
+        client.subscribe("hi")
+
+    # The callback for when a PUBLISH message is received from the server.
+    def on_message(client, userdata, msg):
+        print(msg.topic+" "+str(msg.payload))
 
 
-    print(f"[x] Sent {message}")
 
-    # Close connection
-    connection.close()
+    ######Authentication############
+    client = mqtt.Client()
+    username = "engineer"
+    password = "anakperantau"
+    client.username_pw_set(username, password)
+    #######################################
+    client.on_connect = on_connect
+    client.on_message = on_message
 
-def tograb(num):
-    print("grabbing %d",num)
+    client.connect("seafood.tuvbo.com", 1883, 60)  # replace "mqtt.example.com" with your broker address
 
-    # pass
+    # Blocking call that processes network traffic, dispatches callbacks and
+    # handles reconnecting.
+    # Other loop*() functions are available that give a threaded interface and a
+    # manual interface.
+    client.loop_forever()
+
+def tograb():
+    print("tograb:")
+    try:
+        last_dict = waitinglist[-1]
+        print("Last dictionary:", last_dict)
+        print("Last dictionary track_id:", last_dict['track_id'])
+        print("Last dictionary object name:", last_dict['Object_name'])
+        topic=last_dict['Object_name']
+        message=last_dict['track_id']
+        # waitinglist.pop()
+        send_mqtt(topic, message)
+    except IndexError:
+        print("The list is empty")
 
 def main(opt):
     check_requirements(ROOT / 'requirements.txt', exclude=('tensorboard', 'thop'))
