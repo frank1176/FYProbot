@@ -165,9 +165,9 @@ def run(
             annotator = Annotator(im0, line_width=line_thickness, example=str(names))
 
             # Draw detected point
-            detectedpoints = [{"x": 300, "y": 300, "radius": 30, "color": (255, 133, 233)},
-                              {"x": 100, "y": 300, "radius": 30, "color": (255, 133, 233)},
-                              {"x": 500, "y": 300, "radius": 30, "color": (255, 133, 233)}]
+            detectedpoints = [{"id":"Point2","x": 300, "y": 300, "radius": 30, "color": (255, 133, 233)},
+                              {"id":"Point1","x": 100, "y": 300, "radius": 30, "color": (255, 133, 233)},
+                              {"id":"Point3","x": 500, "y": 300, "radius": 30, "color": (10, 242, 49)}]
 
             for point in detectedpoints:
                 cv2.circle(im0, (point["x"], point["y"]), point["radius"], point["color"], 3)
@@ -263,10 +263,11 @@ def run(
                         distance = math.sqrt((point["x"] - mid['mid_x'])**2 + (point["y"] - mid['mid_y'])**2)
                         if distance <= point["radius"]:
                             dict3={}
-                            print("Midpoint detected!")
+                            print(f"Midpoint detected inside {point['id']}!")
                             point["color"] = (255, 255, 233) 
                             # Redraw detected point with new color.
                             cv2.circle(im0, (point["x"], point["y"]), point["radius"], point["color"], -1)
+                            dict3['point']=point['id']
                             dict3['track_id']=mid['track_id'] if 'track_id' in mid else "No track_id found"
                             dict3['Object_name']=mid['Object_name']
                             waitinglist.append(dict3)
@@ -353,8 +354,8 @@ def parse_opt():
     return opt
 
 # count1=0
-def send_mqtt(topic, message):
-
+def send_mqtt(objectname, track_id,point):
+    print("sending mqtt")
     def on_log(client, userdata, level, buf):
         print("log: ",buf)
 
@@ -376,7 +377,8 @@ def send_mqtt(topic, message):
 
     try:
         # Publish a message
-        res = client.publish("hi", "Hello, World!")
+        t=f'grab/{point}'
+        res = client.publish(t, objectname)
         
         if res.rc != mqtt.MQTT_ERR_SUCCESS:
             print(f"Error publishing message: {mqtt.error_string(res.rc)}")
@@ -417,18 +419,43 @@ def subscribe_mqtt():
     # Other loop*() functions are available that give a threaded interface and a
     # manual interface.
     client.loop_forever()
+import threading
+sent_messages = set()  
 
 def tograb():
     print("tograb:")
+    
     try:
         last_dict = waitinglist[-1]
-        print("Last dictionary:", last_dict)
-        print("Last dictionary track_id:", last_dict['track_id'])
-        print("Last dictionary object name:", last_dict['Object_name'])
-        topic=last_dict['Object_name']
-        message=last_dict['track_id']
+        # print("Last dictionary:", last_dict)
+        # print("Last dictionary point id:", last_dict['point'])
+        # print("Last dictionary track_id:", last_dict['track_id'])
+        # print("Last dictionary object name:", last_dict['Object_name'])
+        objectname=last_dict['Object_name']
+        track_id=last_dict['track_id']
+        point=last_dict['point']
         # waitinglist.pop()
-        send_mqtt(topic, message)
+        # send_mqtt(topic, message)
+        
+        # If track_id is not in sent_messages, send it
+        # if track_id not in sent_messages:
+        #     send_mqtt(objectname, track_id, point)
+        #     sent_messages.add(track_id)
+        # else:
+        #     print("track_id already sent")
+
+        # # Clean up sent_messages for track_ids that are no longer in waitinglist
+        # for sent_track_id in list(sent_messages):
+        #     if not any(d['track_id'] == sent_track_id for d in waitinglist):
+        #         sent_messages.remove(sent_track_id)
+        # if track_id not in sent_messages:
+        #     send_mqtt(objectname, track_id,point)
+        #     sent_messages.add(track_id)
+        # else:
+        #     print("track_id already sent")
+        #     # timer = threading.Timer(5.0, sent_messages.clear())
+        #     # timer.start()
+
     except IndexError:
         print("The list is empty")
 

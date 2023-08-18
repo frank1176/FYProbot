@@ -6,7 +6,9 @@ def on_connect(client, userdata, flags, rc):
 
     # Subscribing in on_connect() means that if we lose the connection and
     # reconnect then subscriptions will be renewed.
-    client.subscribe("hi")
+    client.subscribe("grab/Point1")
+    client.subscribe("grab/Point2")
+    client.subscribe("grab/Point3")
 
 # The callback for when a PUBLISH message is received from the server.
 def on_message(client, userdata, msg):

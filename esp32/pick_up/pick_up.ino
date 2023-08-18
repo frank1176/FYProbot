@@ -114,7 +114,7 @@ void point1(){
   Serial.println("Point1....");
 
   Serial2.print("#10P0000T0000\r\n"); //start
-  Serial2.print("#1P1720T1000\r\n"); 
+  Serial2.print("#1P1750T1000\r\n"); 
   delay(delay1);
   Serial2.print("#2P1700T1000\r\n"); 
   delay(delay1);
@@ -128,13 +128,38 @@ void point1(){
   delay(delay1);
   Serial2.print("#2P2100T1000\r\n"); 
   delay(delay1);
-  Serial2.print("#6P1400T1000\r\n"); 
+  Serial2.print("#6P1300T1000\r\n"); 
   
   Serial.println("Point1 finish");
 
 }
 
+void point2(){
+  int delay2=2000;
+  Serial.println("Point1....");
+  Serial2.print("#10P0000T0000\r\n"); //start
+  Serial2.print("#1P1500T1000\r\n"); 
+  delay(delay2);
+  Serial2.print("#2P1700T1000\r\n"); 
+  delay(delay2);
+  Serial2.print("#3P1100T1000\r\n"); 
+  delay(delay2);
+  Serial2.print("#2P1900T1000\r\n"); 
+  delay(delay2);
+  Serial2.print("#4P1800T1000\r\n"); 
+  delay(delay2);
+  Serial2.print("#2P2100T1000\r\n"); 
+  delay(delay2);
+  Serial2.print("#4P1900T1000\r\n"); 
+  delay(delay2);
+  Serial2.print("#6P1300T1000\r\n"); 
+  delay(delay2);
+  Serial.println("Point2 finish");
+}
+void point3(){
+  int delay3=2000;
 
+}
 void plastic(){
   int delayp=2000;
   Serial.println("plastic start");
@@ -207,9 +232,11 @@ void loop() {
   Serial.println("3. Grab1()");
   Serial.println("4. Grab2()");
   Serial.println("5. Point1()");
-  Serial.println("6. Plastic()");
-  Serial.println("7. Metal()");
-  Serial.println("8. Paper()");
+  Serial.println("6. Point2()");
+  Serial.println("7. Point3()");
+  Serial.println("8. Plastic()");
+  Serial.println("9. Metal()");
+  Serial.println("10. Paper()");
   while (Serial.available() == 0) {}
   input = Serial.parseInt();
   Serial.read();
@@ -231,12 +258,18 @@ void loop() {
       point1();
       break;
     case 6:
-      plastic();
+      point2();
       break;
     case 7:
-      metal();
+      point3();
       break;
     case 8:
+      plastic();
+      break;
+    case 9:
+      metal();
+      break;
+    case 10:
       paper();
       break; 
     default:

@@ -27,6 +27,9 @@ void setup() {
   client.setServer(mqtt_server, 1883);
   client.setCallback(callback);
   client.subscribe(mqtt_topic);
+  client.subscribe("Point1");
+  client.subscribe("Point2");
+  client.subscribe("Point3");
   client.publish(mqtt_topic, "hi fyp waimin");
   
 }
@@ -53,6 +56,9 @@ void reconnect() {
       // ... and resubscribe
       // client.subscribe("inTopic");
       client.subscribe(mqtt_topic);
+      client.subscribe("Point1");
+      client.subscribe("Point2");
+      client.subscribe("Point3");
     } else {
       Serial.print("failed, rc=");
       Serial.print(client.state());
@@ -75,17 +81,43 @@ void callback(char *topic, byte *payload, unsigned int length) {
     }
     Serial.println();
     Serial.println("-----------------------");
+    Serial.println(receivedString);
+    
+    if(String(topic).equals("Point1")){
+      point1();
+      delay(1000);
+      if(receivedString == "plasticrotation"){
+          plastic();
+      } else if(receivedString == "metalrotation"){
+          metal();
+      } else if(receivedString == "paperrotation"){
+          paper();
+      }
+}
 
-    if(topic && receivedString =="point1"){
-       point1();
-    }
 }
 
 
 void point1(){
-  Serial.println("moving");
-  Serial.println("grabing");
-  Serial.println("ending");
+  int delay1=2000;
+  Serial.println("Point1....");
+  Serial2.print("#10P0000T0000\r\n"); //start
+  Serial2.print("#1P1750T1000\r\n"); 
+  delay(delay1);
+  Serial2.print("#2P1700T1000\r\n"); 
+  delay(delay1);
+  Serial2.print("#3P1100T1000\r\n"); 
+  delay(delay1);
+  Serial2.print("#4P1900T1000\r\n"); 
+  delay(delay1);
+  Serial2.print("#2P2000T1000\r\n"); 
+  delay(delay1);
+  Serial2.print("#5P1800T1000\r\n"); 
+  delay(delay1);
+  Serial2.print("#2P2100T1000\r\n"); 
+  delay(delay1);
+  Serial2.print("#6P1300T1000\r\n"); 
+  Serial.println("Point1 finish");
 }
 void point2(){
   Serial.println("moving");
