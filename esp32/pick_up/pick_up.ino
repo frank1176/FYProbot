@@ -110,7 +110,7 @@ void grab2(){
 }
 
 void point1(){
-  int delay1=2000;
+  int delay1=1000;
   Serial.println("Point1....");
 
   Serial2.print("#10P0000T0000\r\n"); //start
@@ -135,7 +135,7 @@ void point1(){
 }
 
 void point2(){
-  int delay2=2000;
+  int delay2=1000;
   Serial.println("Point1....");
   Serial2.print("#10P0000T0000\r\n"); //start
   Serial2.print("#1P1500T1000\r\n"); 
@@ -158,7 +158,26 @@ void point2(){
 }
 void point3(){
   int delay3=2000;
-
+  Serial2.print("#10P0000T0000\r\n"); //start
+  Serial2.print("#1P1250T1000\r\n"); 
+  delay(delay3);
+  Serial2.print("#3P1500T1000\r\n"); 
+  delay(delay3);
+  Serial2.print("#2P2000T1000\r\n"); 
+  delay(delay3);
+  Serial2.print("#5P1400T1000\r\n"); 
+  delay(delay3);
+  Serial2.print("#4P2100T1000\r\n"); 
+  delay(delay3);
+  Serial2.print("#2P2200T1000\r\n"); 
+  delay(delay3);
+  Serial2.print("#1P1200T1000\r\n"); 
+  delay(delay3);
+  Serial2.print("#3P1300T1000\r\n"); 
+  delay(delay3);
+  Serial2.print("#6P1300T1000\r\n"); 
+  delay(delay3);
+  Serial.println("Point3 finish");
 }
 void plastic(){
   int delayp=2000;

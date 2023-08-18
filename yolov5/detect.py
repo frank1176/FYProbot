@@ -167,7 +167,7 @@ def run(
             # Draw detected point
             detectedpoints = [{"id":"Point2","x": 300, "y": 300, "radius": 30, "color": (255, 133, 233)},
                               {"id":"Point1","x": 100, "y": 300, "radius": 30, "color": (255, 133, 233)},
-                              {"id":"Point3","x": 500, "y": 300, "radius": 30, "color": (10, 242, 49)}]
+                              {"id":"Point3","x": 470, "y": 300, "radius": 30, "color": (10, 242, 49)}]
 
             for point in detectedpoints:
                 cv2.circle(im0, (point["x"], point["y"]), point["radius"], point["color"], 3)
