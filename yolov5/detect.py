@@ -58,6 +58,38 @@ from utils.plots import Annotator, colors, save_one_box
 from utils.torch_utils import select_device, smart_inference_mode
 
 waitinglist=[]
+
+###############MQTT############################################################################
+def on_log(client, userdata, level, buf):
+    print("log: ",buf)
+
+# Create a MQTT client object
+client = mqtt.Client()
+
+# Enable logging
+client.on_log = on_log
+
+# Set your username and password
+client.username_pw_set("engineer", "anakperantau")
+
+try:
+    # Connect to the MQTT broker
+    client.connect("seafood.tuvbo.com", 1883, 60)
+except Exception as e:
+    print("Error connecting to MQTT Broker: ", e)
+    exit(1)
+
+try:
+    # Publish a message
+    res = client.publish("hi", "Hello, World!")
+    
+    if res.rc != mqtt.MQTT_ERR_SUCCESS:
+        print(f"Error publishing message: {mqtt.error_string(res.rc)}")
+except Exception as e:
+    print("Error publishing message: ", e)
+###############################################################################################
+
+
 @smart_inference_mode()
 def run(
         weights=ROOT / 'yolov5s.pt',  # model path or triton URL
@@ -166,8 +198,8 @@ def run(
 
             # Draw detected point
             detectedpoints = [{"id":"Point2","x": 300, "y": 300, "radius": 30, "color": (255, 133, 233)},
-                              {"id":"Point1","x": 100, "y": 300, "radius": 30, "color": (255, 133, 233)},
-                              {"id":"Point3","x": 470, "y": 300, "radius": 30, "color": (10, 242, 49)}]
+                              {"id":"Point1","x": 150, "y": 300, "radius": 30, "color": (255, 133, 233)},
+                              {"id":"Point3","x": 450, "y": 300, "radius": 30, "color": (10, 242, 49)}]
 
             for point in detectedpoints:
                 cv2.circle(im0, (point["x"], point["y"]), point["radius"], point["color"], 3)
@@ -353,37 +385,59 @@ def parse_opt():
     print_args(vars(opt))
     return opt
 
+sent_objects = set()
+def tograb():
+    print("tograb:")
+    try:
+        last_dict = waitinglist[-1]
+        # print("Last dictionary:", last_dict)
+        # print("Last dictionary point id:", last_dict['point'])
+        # print("Last dictionary track_id:", last_dict['track_id'])
+        # print("Last dictionary object name:", last_dict['Object_name'])
+        objectname=last_dict['Object_name']
+        track_id=last_dict['track_id']
+        point=last_dict['point']
+       
+        if (track_id, point) not in sent_objects:
+            # send_mqtt(objectname, track_id, point)
+            client.publish(point, objectname)
+            # Add the track_id and point to the sent_objects
+            sent_objects.add((track_id, point))
+        else:
+            print(f"MQTT message for track_id: {track_id} and point: {point} was already sent.")
+    except IndexError:
+        print("The list is empty")
+
 # count1=0
-def send_mqtt(objectname, track_id,point):
-    print("sending mqtt")
-    def on_log(client, userdata, level, buf):
-        print("log: ",buf)
+# def send_mqtt(objectname, track_id,point):
+#     print("sending mqtt")
+#     def on_log(client, userdata, level, buf):
+#         print("log: ",buf)
 
-    # Create a MQTT client object
-    client = mqtt.Client()
+#     # Create a MQTT client object
+#     client = mqtt.Client()
 
-    # Enable logging
-    client.on_log = on_log
+#     # Enable logging
+#     client.on_log = on_log
 
-    # Set your username and password
-    client.username_pw_set("engineer", "anakperantau")
+#     # Set your username and password
+#     client.username_pw_set("engineer", "anakperantau")
 
-    try:
-        # Connect to the MQTT broker
-        client.connect("seafood.tuvbo.com", 1883, 60)
-    except Exception as e:
-        print("Error connecting to MQTT Broker: ", e)
-        exit(1)
+#     try:
+#         # Connect to the MQTT broker
+#         client.connect("seafood.tuvbo.com", 1883, 60)
+#     except Exception as e:
+#         print("Error connecting to MQTT Broker: ", e)
+#         exit(1)
 
-    try:
-        # Publish a message
-        t=f'grab/{point}'
-        res = client.publish(t, objectname)
-        
-        if res.rc != mqtt.MQTT_ERR_SUCCESS:
-            print(f"Error publishing message: {mqtt.error_string(res.rc)}")
-    except Exception as e:
-        print("Error publishing message: ", e)
+#     try:
+#         # Publish a message
+#         res1 = client.publish('sent_mqtt', 'testing')
+#         res = client.publish(point, objectname)
+#         if res.rc != mqtt.MQTT_ERR_SUCCESS:
+#             print(f"Error publishing message: {mqtt.error_string(res.rc)}")
+#     except Exception as e:
+#         print("Error publishing message: ", e)
 
     # Disconnect from the broker
     # client.disconnect()
@@ -419,45 +473,9 @@ def subscribe_mqtt():
     # Other loop*() functions are available that give a threaded interface and a
     # manual interface.
     client.loop_forever()
-import threading
-sent_messages = set()  
 
-def tograb():
-    print("tograb:")
-    
-    try:
-        last_dict = waitinglist[-1]
-        # print("Last dictionary:", last_dict)
-        # print("Last dictionary point id:", last_dict['point'])
-        # print("Last dictionary track_id:", last_dict['track_id'])
-        # print("Last dictionary object name:", last_dict['Object_name'])
-        objectname=last_dict['Object_name']
-        track_id=last_dict['track_id']
-        point=last_dict['point']
-        # waitinglist.pop()
-        # send_mqtt(topic, message)
-        
-        # If track_id is not in sent_messages, send it
-        # if track_id not in sent_messages:
-        #     send_mqtt(objectname, track_id, point)
-        #     sent_messages.add(track_id)
-        # else:
-        #     print("track_id already sent")
 
-        # # Clean up sent_messages for track_ids that are no longer in waitinglist
-        # for sent_track_id in list(sent_messages):
-        #     if not any(d['track_id'] == sent_track_id for d in waitinglist):
-        #         sent_messages.remove(sent_track_id)
-        # if track_id not in sent_messages:
-        #     send_mqtt(objectname, track_id,point)
-        #     sent_messages.add(track_id)
-        # else:
-        #     print("track_id already sent")
-        #     # timer = threading.Timer(5.0, sent_messages.clear())
-        #     # timer.start()
 
-    except IndexError:
-        print("The list is empty")
 
 def main(opt):
     check_requirements(ROOT / 'requirements.txt', exclude=('tensorboard', 'thop'))

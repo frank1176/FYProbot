@@ -85,7 +85,7 @@ void callback(char *topic, byte *payload, unsigned int length) {
     
     if(String(topic).equals("Point1")){
       point1();
-      delay(1000);
+      delay(2000);
       if(receivedString == "plasticrotation"){
           plastic();
       } else if(receivedString == "metalrotation"){
@@ -93,7 +93,35 @@ void callback(char *topic, byte *payload, unsigned int length) {
       } else if(receivedString == "paperrotation"){
           paper();
       }
-}
+    }
+    if(String(topic).equals("Point2")){
+      point2();
+      delay(2000);
+      if(receivedString == "plasticrotation"){
+          plastic();
+      } else if(receivedString == "metalrotation"){
+          metal();
+      } else if(receivedString == "paperrotation"){
+          paper();
+      }
+    }
+    if(String(topic).equals("Point3")){
+      point3();
+      delay(2000);
+      if(receivedString == "plasticrotation"){
+          plastic();
+      } else if(receivedString == "metalrotation"){
+          metal();
+      } else if(receivedString == "paperrotation"){
+          paper();
+      }
+    }
+    if(String(topic).equals("Stop")){
+      stop();
+    }
+    if(String(topic).equals("Rest")){
+      reset();
+    }
 
 }
 
@@ -120,15 +148,50 @@ void point1(){
   Serial.println("Point1 finish");
 }
 void point2(){
-  Serial.println("moving");
-  Serial.println("grabing");
-  Serial.println("ending");
+  int delay2=2000;
+  Serial.println("Point2....");
+  Serial2.print("#10P0000T0000\r\n"); //start
+  Serial2.print("#1P1500T1000\r\n"); 
+  delay(delay2);
+  Serial2.print("#2P1700T1000\r\n"); 
+  delay(delay2);
+  Serial2.print("#3P1100T1000\r\n"); 
+  delay(delay2);
+  Serial2.print("#2P1900T1000\r\n"); 
+  delay(delay2);
+  Serial2.print("#4P1800T1000\r\n"); 
+  delay(delay2);
+  Serial2.print("#2P2100T1000\r\n"); 
+  delay(delay2);
+  Serial2.print("#4P1900T1000\r\n"); 
+  delay(delay2);
+  Serial2.print("#6P1300T1000\r\n"); 
+  delay(delay2);
+  Serial.println("Point2 finish");
 }
 
 void point3(){
- Serial.println("moving");
-  Serial.println("grabing");
-  Serial.println("ending");
+ int delay3=2000;
+  Serial2.print("#10P0000T0000\r\n"); //start
+  Serial2.print("#1P1250T1000\r\n"); 
+  delay(delay3);
+  Serial2.print("#3P1500T1000\r\n"); 
+  delay(delay3);
+  Serial2.print("#2P2000T1000\r\n"); 
+  delay(delay3);
+  Serial2.print("#5P1400T1000\r\n"); 
+  delay(delay3);
+  Serial2.print("#4P2100T1000\r\n"); 
+  delay(delay3);
+  Serial2.print("#2P2200T1000\r\n"); 
+  delay(delay3);
+  Serial2.print("#1P1200T1000\r\n"); 
+  delay(delay3);
+  Serial2.print("#3P1300T1000\r\n"); 
+  delay(delay3);
+  Serial2.print("#6P1300T1000\r\n"); 
+  delay(delay3);
+  Serial.println("Point3 finish");
 }
 
 void reset(){
