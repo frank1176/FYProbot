@@ -94,7 +94,7 @@ void callback(char *topic, byte *payload, unsigned int length) {
           paper();
       }
     }
-    if(String(topic).equals("Point2")){
+    else if(String(topic).equals("Point2")){
       point2();
       delay(2000);
       if(receivedString == "plasticrotation"){
@@ -105,7 +105,7 @@ void callback(char *topic, byte *payload, unsigned int length) {
           paper();
       }
     }
-    if(String(topic).equals("Point3")){
+    else if(String(topic).equals("Point3")){
       point3();
       delay(2000);
       if(receivedString == "plasticrotation"){
@@ -116,10 +116,10 @@ void callback(char *topic, byte *payload, unsigned int length) {
           paper();
       }
     }
-    if(String(topic).equals("Stop")){
+    else if(String(topic).equals("Stop")){
       stop();
     }
-    if(String(topic).equals("Rest")){
+    else if(String(topic).equals("Reset")){
       reset();
     }
 
@@ -130,7 +130,7 @@ void point1(){
   int delay1=2000;
   Serial.println("Point1....");
   Serial2.print("#10P0000T0000\r\n"); //start
-  Serial2.print("#1P1750T1000\r\n"); 
+  Serial2.print("#1P1700T1000\r\n"); 
   delay(delay1);
   Serial2.print("#2P1700T1000\r\n"); 
   delay(delay1);

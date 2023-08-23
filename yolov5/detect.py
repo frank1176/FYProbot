@@ -303,8 +303,10 @@ def run(
                             dict3['track_id']=mid['track_id'] if 'track_id' in mid else "No track_id found"
                             dict3['Object_name']=mid['Object_name']
                             waitinglist.append(dict3)
+                            tograb()
+                    # tograb()
                 print(waitinglist)
-                tograb()
+                # tograb()
                 waitinglist.clear()
                 midpoints.clear()
                   

@@ -114,7 +114,7 @@ void point1(){
   Serial.println("Point1....");
 
   Serial2.print("#10P0000T0000\r\n"); //start
-  Serial2.print("#1P1750T1000\r\n"); 
+  Serial2.print("#1P1700T1000\r\n"); 
   delay(delay1);
   Serial2.print("#2P1700T1000\r\n"); 
   delay(delay1);
@@ -152,7 +152,7 @@ void point2(){
   delay(delay2);
   Serial2.print("#4P1900T1000\r\n"); 
   delay(delay2);
-  Serial2.print("#6P1300T1000\r\n"); 
+  Serial2.print("#6P1250T1000\r\n"); 
   delay(delay2);
   Serial.println("Point2 finish");
 }
