@@ -17,6 +17,13 @@ v4l2rtspserver -F 60 -W 640 -H 480 -P 8554 /dev/video0
 
 # yolov5 
 python detect.py --source rtsp://engineer:anakperantau@192.168.0.23:8554/unicast --weights yolov5s.pt
+python detect.py --source rtsp://engineer:anakperantau@192.168.0.26:8554/unicast --weights yolov5s.pt --classes 67 --name exp --exist-ok --nosave
+python detect.py --source rtsp://engineer:anakperantau@192.168.0.26:8554/unicast --weights best.pt --conf 0.7 --name wastedetection --exist-ok --nosave
+python detect.py --source rtsp://engineer:anakperantau@192.168.0.26:8554/unicast --weights best.pt --conf 0.7 --name wastedetection --exist-ok --nosave
+python detect.py --source rtsp://engineer:anakperantau@192.168.0.26:8554/unicast --weights runs/train/exp7/weights/best.pt --conf 0.7 --name wastedetection --exist-ok --nosave
+python detect.py --source rtsp://engineer:anakperantau@192.168.0.26:8554/unicast --weights runs/train/exp7/weights/last.pt --conf 0.7 --name wastedetection --exist-ok --nosave
+python detect.py --source rtsp://engineer:anakperantau@192.168.0.26:8554/unicast --weights runs/train/exp4/weights/last.pt  --name wastedetection --exist-ok --nosave
+python detect.py --source rtsp://engineer:anakperantau@192.168.0.26:8554/unicast --weights runs/train/exp4/weights/best.pt  --name wastedetection --exist-ok --nosave
 
 ######
 sudo apt-get update

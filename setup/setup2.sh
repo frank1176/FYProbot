@@ -37,5 +37,25 @@ python train.py --img 640 --batch 16 --epochs 100 --data coco128.yaml --weights 
 python train.py --img 640 --batch 8 --epochs 2 --data coco128.yaml --weights yolov5s.pt 
 python train.py --img 640 --epochs 2 --data coco128.yaml --weights yolov5s.pt 
 
+# exp1
+python train.py --img 640 --batch 16 --epochs 100 --data data/data.yaml --weights yolov5s.pt --device 0
+# exp2
+python train.py --img 640 --batch 8 --epochs 100 --data data/data.yaml --weights yolov5s.pt --device 0
+# exp3
+python train.py --img 640 --batch 8 --epochs 300 --data data/data.yaml --weights yolov5s.pt --device 0
+# exp4
+python train.py --img 640 --batch 16 --epochs 300 --data data/data.yaml --weights yolov5s.pt --device 0
+# exp5
+python train.py --img 640 --batch 8 --epochs 500 --data data/data.yaml --weights yolov5s.pt --device 0
+# exp6
+python train.py --img 640 --batch 16 --epochs 500 --data data/data.yaml --weights yolov5s.pt --device 0
+# exp7
+python train.py --img 640 --batch 8 --epochs 800 --data data/data.yaml --weights yolov5s.pt --device 0
+# exp8
+# python train.py --img 640 --batch 16 --epochs 800 --data data/data.yaml --weights yolov5s.pt --device 0
+# # exp9
+# python train.py --img 640 --batch 8 --epochs 1000 --data data/data.yaml --weights yolov5s.pt --device 0
+# # exp10
+# python train.py --img 640 --batch 16 --epochs 1000 --data data/data.yaml --weights yolov5s.pt --device 0
 
 python .\detect.py --source 0 --weights .\runs\train\exp15\weights\best.pt

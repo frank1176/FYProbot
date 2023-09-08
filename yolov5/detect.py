@@ -206,6 +206,7 @@ def run(
 
             # Draw Line 
             cv2.line(im0,(170,170),(400,170), (0, 255, 0), 2)
+            cv2.line(im0,(250,150),(250,190), (255, 255, 0), 2)
             
             midpoints=[]
             if len(det):
@@ -402,7 +403,7 @@ def tograb():
        
         if (track_id, point) not in sent_objects:
             # send_mqtt(objectname, track_id, point)
-            client.publish(point, objectname)
+            # client.publish(point, objectname)
             # Add the track_id and point to the sent_objects
             sent_objects.add((track_id, point))
         else:

@@ -29,3 +29,6 @@ docker exec -it cvat_server bash -ic 'python3 ~/manage.py createsuperuser'
 
 # stop docker
 docker-compose down
+
+# limit docker memory
+# https://itnext.io/wsl2-tips-limit-cpu-memory-when-using-docker-c022535faf6f

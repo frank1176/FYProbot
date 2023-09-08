@@ -1,0 +1,13 @@
+train: ../train/images
+val: ../valid/images
+test: ../test/images
+
+nc: 11
+names: ['Metal-laydown_0-rotation', 'Metal-laydown_45left-rotation', 'Metal-laydown_45right-rotation', 'Metal-laydown_90-rotation', 'Metal-stand-rotation', 'Paperrotation', 'Plastic-laydown_0-rotation', 'Plastic-laydown_45left-rotation', 'Plastic-laydown_45right-rotation', 'Plastic-laydown_90-rotation', 'Plastic-stand-rotation']
+
+roboflow:
+  workspace: learn-f5r6d
+  project: testing2-epmfu
+  version: 1
+  license: CC BY 4.0
+  url: https://universe.roboflow.com/learn-f5r6d/testing2-epmfu/dataset/1
