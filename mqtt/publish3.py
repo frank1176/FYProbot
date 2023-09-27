@@ -3,6 +3,8 @@ import paho.mqtt.client as mqtt
 def on_log(client, userdata, level, buf):
     print("log: ",buf)
     
+
+
 def send_mqtt(objectname, track_id,point):
     print("sending mqtt")
     # Create a MQTT client object
@@ -16,7 +18,7 @@ def send_mqtt(objectname, track_id,point):
 
     try:
         # Connect to the MQTT broker
-        client.connect("seafood.tuvbo.com", 1883, 60)
+        client.connect("c2.kynoci.com", 1883, 60)
     except Exception as e:
         print("Error connecting to MQTT Broker: ", e)
         exit(1)
@@ -33,8 +35,9 @@ def send_mqtt(objectname, track_id,point):
     # Disconnect from the broker
     # client.disconnect()
 
-
 send_mqtt('plasticrotation',1.0,'Point_1')
+
+
 
 # sent_objects = set()
 # def tograb():

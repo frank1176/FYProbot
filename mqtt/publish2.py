@@ -14,7 +14,7 @@ client.username_pw_set("engineer", "anakperantau")
 
 try:
     # Connect to the MQTT broker
-    client.connect("seafood.tuvbo.com", 1883, 60)
+    client.connect("c2.kynoci.com", 1883, 60)
 except Exception as e:
     print("Error connecting to MQTT Broker: ", e)
     exit(1)
