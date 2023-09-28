@@ -7,7 +7,7 @@ char out[20];
 
 void setup() {
   // put your setup code here, to run once:
-  Serial.begin(9600);
+  Serial.begin(115200);
   Serial2.begin(9600,SERIAL_8N1,RXD2,TXD2);
   Serial.println("Serial Txd is on pin"+String(TXD2));
   Serial.println("Serial Rxd is on pin"+String(RXD2));
@@ -20,17 +20,7 @@ void reset(){
   Serial.println("Resting....");
   // Serial2.print("#1P0000T0000\r\n"); //start
   Serial2.print("#10P0000T1000\r\n");
-  Serial2.print("#1P1500T1000\r\n");
-  delay(delayreset);
-  Serial2.print("#2P1500T1000\r\n");
-  delay(delayreset);
-  Serial2.print("#3P800T1000\r\n");
-  delay(delayreset);
-  Serial2.print("#4P2000T1000\r\n");
-  delay(delayreset);
-  Serial2.print("#5P1500T1000\r\n");
-  delay(delayreset);
-  Serial2.print("#6P1700T1000\r\n");
+  Serial2.print("#1P1500#2P1500#3P800#4P2000#5P1500#6P1700T1500\r\n");
   delay(delayreset);
   // Serial2.print("#1P1500T0500\r\n");
   Serial.print("Rest end \n");
@@ -46,46 +36,108 @@ void point1_stand(){
   Serial.println("Point1....");
 
   Serial2.print("#10P0000T0000\r\n"); //start
-  Serial2.print("#1P1700T1000\r\n"); 
+  Serial2.print("#1P1750#2P1800#3P500#4P800T1500\r\n"); 
+  delay(delay1);
+  Serial2.print("#2P2200T1500\r\n"); 
+  delay(delay1);
+  Serial2.print("#3P600T1500\r\n"); 
+  delay(delay1);
+  Serial2.print("#6P1220T1500\r\n"); 
   delay(delay1);
   Serial.println("Point1 finish");
-
+  stop();
 }
 void point1_laydown_0(){
   int delay1=2000;
   Serial.println("Point1....");
   Serial2.print("#10P0000T0000\r\n"); //start
-  Serial2.print("#1P1700T1000\r\n"); 
+  Serial2.print("#1P1700#2P1700#3P1100#4P1900T1000\r\n"); 
   delay(delay1);
+  Serial2.print("#5P1800#2P2100T1000\r\n"); 
+  delay(delay1);
+  Serial2.print("#6P1200T1000\r\n");  
   Serial.println("Point1 finish");
+  stop();
 }
 void point1_laydown_90(){
   int delay1=2000;
   Serial.println("Point1....");
   Serial2.print("#10P0000T0000\r\n"); //start
-  Serial2.print("#1P1700T1000\r\n"); 
+  Serial2.print("#1P1700#2P1700#3P1100#4P2000T1000\r\n"); 
+  delay(delay1);
+  Serial2.print("#2P2100#5P500T1000\r\n"); 
+  delay(delay1);
+  Serial2.print("#6P1250T1000\r\n"); 
   delay(delay1);
   Serial.println("Point1 finish");
+  stop();
 }
+
+void point2_laydown_0(){
+  int delay1=2000;
+  Serial.println("Point1....");
+  Serial2.print("#10P0000T0000\r\n"); //start
+  Serial2.print("#1P1500#2P1700#3P1100#4P1900T1000\r\n"); 
+  delay(delay1);
+  Serial2.print("#5P1500#2P2100T1000\r\n"); 
+  delay(delay1);
+  Serial2.print("#6P1300T1000\r\n");  
+  Serial.println("Point1 finish");
+  stop();
+}
+
+void point2_laydown_90(){
+  int delay1=2000;
+  Serial.println("Point2....");
+  Serial2.print("#10P0000T0000\r\n"); //start
+  Serial2.print("#1P1500#2P1700#3P1100#4P2000T1000\r\n"); 
+  delay(delay1);
+  Serial2.print("#2P2100#5P500T1000\r\n"); 
+  delay(delay1);
+  Serial2.print("#6P1250T1000\r\n"); 
+  delay(delay1);
+  Serial.println("Point2 finish");
+  stop();
+}
+void point2_stand(){
+  int delay1=2000;
+  Serial.println("Point2....");
+  Serial2.print("#10P0000T0000\r\n"); //start
+  Serial2.print("#1P1500#2P1800#3P500#4P800T1000\r\n"); 
+  delay(delay1);
+  Serial2.print("#2P2200T1000\r\n"); 
+  delay(delay1);
+  Serial2.print("#3P600T1000\r\n"); 
+  delay(delay1);
+  Serial2.print("#6P1220T1000\r\n"); 
+  delay(delay1);
+  Serial.println("Point2 finish");
+  stop();
+}
+void point3_stand(){
+  int delay1=2000;
+  Serial.println("Point2....");
+  Serial2.print("#10P0000T0000\r\n"); //start
+  Serial2.print("#1P1230#2P1800#3P550#4P800T1000\r\n"); 
+  delay(delay1);
+  Serial2.print("#2P2200T1000\r\n"); 
+  delay(delay1);
+  Serial2.print("#3P600T1000\r\n"); 
+  delay(delay1);
+  Serial2.print("#6P1230T1000\r\n"); 
+  delay(delay1);
+  Serial.println("Point2 finish");
+  stop();
+}
+
 void plastic(){
   int delayp=2000;
   Serial.println("plastic start");
-  Serial2.print("#2P1500T1000\r\n"); 
+  Serial2.print("#2P1500#1P1500#3P2000#4P1500#5P1500T1000\r\n");
   delay(delayp);
-  Serial2.print("#1P1500T1000\r\n");
-  delay(delayp);
-  Serial2.print("#3P2000T1000\r\n");
-  delay(delayp);
-  Serial2.print("#4P1500T1000\r\n");
-  delay(delayp);
-  Serial2.print("#5P1500T1000\r\n");
-  delay(delayp);
-  Serial2.print("#3P1500T1000\r\n"); 
-  delay(delayp);
-  Serial2.print("#2P700T1000\r\n"); 
+  Serial2.print("#3P1500#2P700T1000\r\n"); 
   delay(delayp);
   Serial2.print("#6P1700T1000\r\n"); 
-
   Serial.println("plastic finish");
 }
 
@@ -139,7 +191,13 @@ void loop() {
   Serial.println("3. Plastic()");
   Serial.println("4. Metal()");
   Serial.println("5. Paper()");
-  Serial.println("6. ()");
+  Serial.println("6. point1_laydown_0()");
+  Serial.println("7. point1_laydown_90()");
+  Serial.println("8. point1_stand()");
+  Serial.println("9. point2_stand()");
+  Serial.println("10. point2_laydown_0()");
+  Serial.println("11. point2_laydown_90()");
+  Serial.println("12. point3_stand()");
   while (Serial.available() == 0) {}
   input = Serial.parseInt();
   Serial.read();
@@ -161,13 +219,25 @@ void loop() {
       paper();
       break;
     case 6:
-     
+      point1_laydown_0();
       break;
     case 7:
-      
+      point1_laydown_90();
       break;
     case 8:
-      
+      point1_stand();
+      break;
+    case 9:
+      point2_stand();
+      break;
+    case 10:
+      point2_laydown_0();
+      break;
+    case 11:
+      point2_laydown_90();
+      break;
+    case 12:
+      point3_stand();
       break;
     default:
       Serial.println("Invalid selection. Please enter 1-8.");

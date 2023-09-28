@@ -9,7 +9,7 @@ char out[20];
 
 void setup() {
   // put your setup code here, to run once:
-  Serial.begin(9600);
+  Serial.begin(115200);
   Serial2.begin(9600,SERIAL_8N1,RXD2,TXD2);
   Serial.println("Serial Txd is on pin"+String(TXD2));
   Serial.println("Serial Rxd is on pin"+String(RXD2));
@@ -59,23 +59,12 @@ void reset(){
   Serial.println("Resting....");
   // Serial2.print("#1P0000T0000\r\n"); //start
   Serial2.print("#10P0000T1000\r\n");
-  Serial2.print("#1P1500T1000\r\n");
-  delay(delayreset);
-  Serial2.print("#2P1500T1000\r\n");
-  delay(delayreset);
-  Serial2.print("#3P800T1000\r\n");
-  delay(delayreset);
-  Serial2.print("#4P2000T1000\r\n");
-  delay(delayreset);
-  Serial2.print("#5P1500T1000\r\n");
-  delay(delayreset);
-  Serial2.print("#6P1700T1000\r\n");
+  Serial2.print("#1P1500#2P1500#3P800#4P2000#5P1500#6P1700T1000\r\n");
   delay(delayreset);
   // Serial2.print("#1P1500T0500\r\n");
   Serial.print("Rest end \n");
  
 }
-
 
 // void reset(){
 //   int delayreset=2000;

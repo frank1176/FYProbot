@@ -25,6 +25,8 @@ python detect.py --source rtsp://engineer:anakperantau@192.168.0.26:8554/unicast
 python detect.py --source rtsp://engineer:anakperantau@192.168.0.26:8554/unicast --weights runs/train/exp4/weights/last.pt  --name wastedetection --exist-ok --nosave
 python detect.py --source rtsp://engineer:anakperantau@192.168.0.26:8554/unicast --weights runs/train/exp4/weights/best.pt  --name wastedetection --exist-ok --nosave
 
+# laptop
+python detect.py --source rtsp://engineer:anakperantau@192.168.0.26:8554/unicast --weights detect-pt/exp_ver2/best.pt --conf 0.7 --name wastedetection --exist-ok --nosave
 ######
 sudo apt-get update
 apt-get install v4l-utils vlc
