@@ -16,7 +16,11 @@ cd cvat
 
 cd ~
 cd Desktop/sem6_v2/FYP/cvat
-/sem6_v2/FYP/cvat
+
+##desktop
+cd D:\TARC\Year2\cvat
+
+
 docker compose up -d
 
 docker ps
@@ -26,7 +30,7 @@ docker exec -it cvat_server bash -ic 'python3 ~/manage.py createsuperuser'
 # super user
 #engineer
 #AnakPerantau
-
+# http://localhost:8080/
 # stop docker
 docker-compose down
 

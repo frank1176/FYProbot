@@ -1,0 +1,13 @@
+train: ../train/images
+val: ../valid/images
+test: ../test/images
+
+nc: 7
+names: ['metal_laydown_0rotation', 'metal_laydown_90rotation', 'metal_standrotation', 'paperrotation', 'plastic_laydown_0rotation', 'plastic_laydown_90rotation', 'plastic_standrotation']
+
+roboflow:
+  workspace: learn-f5r6d
+  project: task2-ofb00
+  version: 1
+  license: CC BY 4.0
+  url: https://universe.roboflow.com/learn-f5r6d/task2-ofb00/dataset/1

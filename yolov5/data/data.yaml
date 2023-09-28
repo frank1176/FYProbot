@@ -1,15 +1,13 @@
-path: ../testing2
+train: ../../task2/train/images
+val: ../../task2/valid/images
+test: ../../task2/test/images
 
-train: train/images
-val: valid/images
-test: /test/images
-
-nc: 11
-names: ['Metal-laydown_0-rotation', 'Metal-laydown_45left-rotation', 'Metal-laydown_45right-rotation', 'Metal-laydown_90-rotation', 'Metal-stand-rotation', 'Paperrotation', 'Plastic-laydown_0-rotation', 'Plastic-laydown_45left-rotation', 'Plastic-laydown_45right-rotation', 'Plastic-laydown_90-rotation', 'Plastic-stand-rotation']
+nc: 7
+names: ['metal_laydown_0rotation', 'metal_laydown_90rotation', 'metal_standrotation', 'paperrotation', 'plastic_laydown_0rotation', 'plastic_laydown_90rotation', 'plastic_standrotation']
 
 roboflow:
   workspace: learn-f5r6d
-  project: testing2-epmfu
+  project: task2-ofb00
   version: 1
   license: CC BY 4.0
-  url: https://universe.roboflow.com/learn-f5r6d/testing2-epmfu/dataset/1
+  url: https://universe.roboflow.com/learn-f5r6d/task2-ofb00/dataset/1

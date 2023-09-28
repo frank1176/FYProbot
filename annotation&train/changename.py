@@ -19,7 +19,7 @@ def rename_files(folder_path):
 
 # Provide the folder path
 # folder_path = 'C:/Users/user/Pictures/Camera Roll'
-folder_path = 'D:/TARC/Year3/train'
+folder_path = 'D:/TARC/Year3/train_photo'
 
 # Call the function to rename the files
 rename_files(folder_path)
