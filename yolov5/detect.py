@@ -82,7 +82,7 @@ except Exception as e:
 
 try:
     # Publish a message
-    res = client.publish("hi", "Hello, World!")
+    res = client.publish("hi1", "From PC")
     
     if res.rc != mqtt.MQTT_ERR_SUCCESS:
         print(f"Error publishing message: {mqtt.error_string(res.rc)}")
@@ -153,7 +153,7 @@ def run(
     vid_path, vid_writer = [None] * bs, [None] * bs
 
 ############################SORT#########################
-    tracker = Sort(max_age=20, min_hits=3, iou_threshold=0.3)
+    tracker = Sort(max_age=10, min_hits=3, iou_threshold=0.3)
     print("Sort object created successfully")
 #########################################################
 #     
@@ -306,6 +306,7 @@ def run(
                             dict3['Object_name']=mid['Object_name']
                             waitinglist.append(dict3)
                             tograb()
+                            # break
                     # tograb()
                 print(waitinglist)
                 # tograb()
@@ -394,25 +395,24 @@ def tograb():
     print("tograb:")
     try:
         last_dict = waitinglist[-1]
-        # print("Last dictionary:", last_dict)
-        # print("Last dictionary point id:", last_dict['point'])
-        # print("Last dictionary track_id:", last_dict['track_id'])
-        # print("Last dictionary object name:", last_dict['Object_name'])
-        objectname=last_dict['Object_name']
-        track_id=last_dict['track_id']
-        point=last_dict['point']
+        
+        objectname = last_dict['Object_name']
+        track_id = last_dict['track_id']
+        point = last_dict['point']
        
-        if (track_id, point) not in sent_objects:
-            # send_mqtt(objectname, track_id, point)
-            # client.publish(point, objectname)
-            # Add the track_id and point to the sent_objects
-            sent_objects.add((track_id, point))
+        # Check if track_id and point are not empty
+        if track_id and point:
+            if (track_id, point) not in sent_objects:
+                client.publish(point, objectname)
+                # Add the track_id and point to the sent_objects
+                sent_objects.add((track_id, point))
+            else:
+                print(f"MQTT message for track_id: {track_id} and point: {point} was already sent.")
         else:
-            print(f"MQTT message for track_id: {track_id} and point: {point} was already sent.")
+            print("Track_id or point is empty, skipping MQTT publish.")
+
     except IndexError:
         print("The list is empty")
-
-
 
 def subscribe_mqtt():
     # The callback for when the client receives a CONNECT response from the server.

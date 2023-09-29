@@ -8,8 +8,8 @@ int input;
 
 const char *ssid = "siewseng@unifi"; // Enter your WiFi name
 const char *password = "69983155";  // Enter WiFi password
-const char* mqtt_server = "seafood.tuvbo.com";
-const char* mqtt_topic     = "hi"; // TOPIC (MUST BE UNIQUE)
+const char* mqtt_server = "c2.kynoci.com";
+const char* mqtt_topic     = "hi2"; // TOPIC (MUST BE UNIQUE)
 int         mqtt_port      = 1883;
 const char* mqtt_username  = "engineer";
 const char* mqtt_password  = "anakperantau";
@@ -72,173 +72,264 @@ void reconnect() {
 void callback(char *topic, byte *payload, unsigned int length) {
     Serial.print("Message arrived in topic: ");
     Serial.println(topic);
-    Serial.print("Message:");
-    
+
     String receivedString;
     for (int i = 0; i < length; i++) {
-        Serial.print((char) payload[i]);
         receivedString += (char)payload[i];
     }
-    Serial.println();
     Serial.println("-----------------------");
     Serial.println(receivedString);
-    
-    if(String(topic).equals("Point1")){
-      point1();
-      delay(2000);
-      if(receivedString == "plasticrotation"){
-          plastic();
-      } else if(receivedString == "metalrotation"){
-          metal();
-      } else if(receivedString == "paperrotation"){
-          paper();
-      }
-    }
-    else if(String(topic).equals("Point2")){
-      point2();
-      delay(2000);
-      if(receivedString == "plasticrotation"){
-          plastic();
-      } else if(receivedString == "metalrotation"){
-          metal();
-      } else if(receivedString == "paperrotation"){
-          paper();
-      }
-    }
-    else if(String(topic).equals("Point3")){
-      point3();
-      delay(2000);
-      if(receivedString == "plasticrotation"){
-          plastic();
-      } else if(receivedString == "metalrotation"){
-          metal();
-      } else if(receivedString == "paperrotation"){
-          paper();
-      }
-    }
-    else if(String(topic).equals("Stop")){
-      stop();
-    }
-    else if(String(topic).equals("Reset")){
-      reset();
-    }
 
+    // Map topics to respective functions
+    if (String(topic).equals("Point1")) {
+        handlePoint1(receivedString);
+    } else if (String(topic).equals("Point2")) {
+        handlePoint2(receivedString);
+    } else if (String(topic).equals("Point3")) {
+        handlePoint3(receivedString);
+    } else if (String(topic).equals("Stop")) {
+        stop();
+    } else if (String(topic).equals("Reset")) {
+        reset();
+    }
+}
+
+void handlePoint1(String &receivedString) {
+    if (receivedString == "plastic_standrotation") {
+        point1_stand();
+        // delay(2000);
+        plastic();
+    } else if (receivedString == "plastic_laydown_0rotation") {
+        point1_laydown_0();
+        delay(2000);
+        plastic();
+    } else if (receivedString == "plastic_laydown_90rotation") {
+        point1_laydown_90();
+        delay(2000);
+        plastic();
+    } else if (receivedString == "paperrotation") {
+        point1_laydown_0();
+        delay(2000);
+        paper();
+    } else if (receivedString == "metal_standrotation") {
+        point1_stand();
+        delay(2000);
+        metal();
+    } else if (receivedString == "metal_laydown_0rotation") {
+        point1_laydown_0();
+        delay(2000);
+        metal();
+    } else if (receivedString == "metal_laydown_90rotation") {
+        point1_laydown_90();
+        delay(2000);
+        metal();
+    }
+    delay(2000);
+}
+
+void handlePoint2(String &receivedString) {
+    if (receivedString == "plastic_standrotation") {
+        point2_stand();
+        delay(2000);
+        plastic();
+    } else if (receivedString == "plastic_laydown_0rotation") {
+        point2_laydown_0();
+        delay(2000);
+        plastic();
+    } else if (receivedString == "plastic_laydown_90rotation") {
+        point2_laydown_90();
+        delay(2000);
+        plastic();
+    } else if (receivedString == "paperrotation") {
+        point2_laydown_0();
+        delay(2000);
+        paper();
+    } else if (receivedString == "metal_standrotation") {
+        point2_stand();
+        delay(2000);
+        metal();
+    } else if (receivedString == "metal_laydown_0rotation") {
+        point2_laydown_0();
+        delay(2000);
+        metal();
+    } else if (receivedString == "metal_laydown_90rotation") {
+        point2_laydown_90();
+        delay(2000);
+        metal();
+    }
+    delay(2000);
+}
+
+void handlePoint3(String &receivedString) {
+    if (receivedString == "plastic_standrotation") {
+        point3_stand();
+        delay(2000);
+        plastic();
+    } else if (receivedString == "plastic_laydown_0rotation") {
+        point3_laydown_0();
+        delay(2000);
+        plastic();
+    } else if (receivedString == "plastic_laydown_90rotation") {
+        point3_laydown_90();
+        delay(2000);
+        plastic();
+    } else if (receivedString == "paperrotation") {
+        point3_laydown_0();
+        delay(2000);
+        paper();
+    } else if (receivedString == "metal_standrotation") {
+        point3_stand();
+        delay(2000);
+        metal();
+    } else if (receivedString == "metal_laydown_0rotation") {
+        point3_laydown_0();
+        delay(2000);
+        metal();
+    } else if (receivedString == "metal_laydown_90rotation") {
+        point3_laydown_90();
+        delay(2000);
+        metal();
+    }
+    delay(2000);
 }
 
 
-void point1(){
+void point1_stand(){
+  int delay1=2000;
+  Serial.println("Point1....");
+
+  Serial2.print("#10P0000T0000\r\n"); //start
+  Serial2.print("#1P1750#2P1700#3P500#4P800T1000\r\n"); 
+  delay(delay1);
+  Serial2.print("#2P2200T1000\r\n"); 
+  delay(delay1);
+  Serial2.print("#3P600T1000\r\n"); 
+  delay(delay1);
+  Serial2.print("#6P1220T1000\r\n"); 
+  delay(delay1);
+  Serial.println("Point1 finish");
+  stop();
+}
+void point2_stand(){
+  int delay1=2000;
+  Serial.println("Point2....");
+  Serial2.print("#10P0000T0000\r\n"); //start
+  Serial2.print("#1P1500#2P1700#3P500#4P800T1000\r\n"); 
+  delay(delay1);
+  Serial2.print("#2P2200T1000\r\n"); 
+  delay(delay1);
+  Serial2.print("#3P600T1000\r\n"); 
+  delay(delay1);
+  Serial2.print("#6P1220T1000\r\n"); 
+  delay(delay1);
+  Serial.println("Point2 finish");
+  stop();
+}
+
+void point3_stand(){
+  int delay1=2000;
+  Serial.println("Point3....");
+  Serial2.print("#10P0000T0000\r\n"); //start
+  Serial2.print("#1P1250#2P1800#3P500#4P800T1000\r\n"); 
+  delay(delay1);
+  Serial2.print("#2P2200T1000\r\n"); 
+  delay(delay1);
+  Serial2.print("#3P800#4P1000T1000\r\n"); 
+  delay(delay1);
+  Serial2.print("#6P1220T1000\r\n"); 
+  delay(delay1);
+  Serial.println("Point3 finish");
+  stop();
+}
+
+
+void point1_laydown_90(){
   int delay1=2000;
   Serial.println("Point1....");
   Serial2.print("#10P0000T0000\r\n"); //start
-  Serial2.print("#1P1700T1000\r\n"); 
+  Serial2.print("#1P1700#2P1700#3P1100#4P1900T1000\r\n"); 
   delay(delay1);
-  Serial2.print("#2P1700T1000\r\n"); 
+  Serial2.print("#5P1800#2P2100T1000\r\n"); 
   delay(delay1);
-  Serial2.print("#3P1100T1000\r\n"); 
-  delay(delay1);
-  Serial2.print("#4P1900T1000\r\n"); 
-  delay(delay1);
-  Serial2.print("#2P2000T1000\r\n"); 
-  delay(delay1);
-  Serial2.print("#5P1800T1000\r\n"); 
-  delay(delay1);
-  Serial2.print("#2P2100T1000\r\n"); 
-  delay(delay1);
-  Serial2.print("#6P1300T1000\r\n"); 
+  Serial2.print("#6P1200T1000\r\n");  
   Serial.println("Point1 finish");
+  stop();
 }
-void point2(){
-  int delay2=2000;
+void point2_laydown_90(){
+  int delay1=2000;
   Serial.println("Point2....");
   Serial2.print("#10P0000T0000\r\n"); //start
-  Serial2.print("#1P1500T1000\r\n"); 
-  delay(delay2);
-  Serial2.print("#2P1700T1000\r\n"); 
-  delay(delay2);
-  Serial2.print("#3P1100T1000\r\n"); 
-  delay(delay2);
-  Serial2.print("#2P1900T1000\r\n"); 
-  delay(delay2);
-  Serial2.print("#4P1800T1000\r\n"); 
-  delay(delay2);
-  Serial2.print("#2P2100T1000\r\n"); 
-  delay(delay2);
-  Serial2.print("#4P1900T1000\r\n"); 
-  delay(delay2);
-  Serial2.print("#6P1300T1000\r\n"); 
-  delay(delay2);
+  Serial2.print("#1P1500#2P1700#3P1100#4P1900T1000\r\n"); 
+  delay(delay1);
+  Serial2.print("#5P1500#2P2100T1000\r\n"); 
+  delay(delay1);
+  Serial2.print("#6P1250T1000\r\n");  
   Serial.println("Point2 finish");
+  stop();
 }
-
-void point3(){
- int delay3=2000;
+void point3_laydown_90(){
+  int delay1=2000;
+  Serial.println("Point3....");
   Serial2.print("#10P0000T0000\r\n"); //start
-  Serial2.print("#1P1250T1000\r\n"); 
-  delay(delay3);
-  Serial2.print("#3P1500T1000\r\n"); 
-  delay(delay3);
-  Serial2.print("#2P2000T1000\r\n"); 
-  delay(delay3);
-  Serial2.print("#5P1400T1000\r\n"); 
-  delay(delay3);
-  Serial2.print("#4P2100T1000\r\n"); 
-  delay(delay3);
-  Serial2.print("#2P2200T1000\r\n"); 
-  delay(delay3);
-  Serial2.print("#1P1200T1000\r\n"); 
-  delay(delay3);
-  Serial2.print("#3P1300T1000\r\n"); 
-  delay(delay3);
-  Serial2.print("#6P1300T1000\r\n"); 
-  delay(delay3);
+  Serial2.print("#1P1300#2P2100#3P1400#4P2000T1000\r\n"); 
+  delay(delay1);
+  Serial2.print("#5P1300#2P2300T1000\r\n"); 
+  delay(delay1);
+  Serial2.print("#6P1250T1000\r\n");  
   Serial.println("Point3 finish");
+  stop();
+
 }
 
-void reset(){
-  int delayreset=2000;
-  Serial.println("Resting....");
-  // Serial2.print("#1P0000T0000\r\n"); //start
-  Serial2.print("#10P0000T1000\r\n");
-  Serial2.print("#1P1500T1000\r\n");
-  delay(delayreset);
-  Serial2.print("#2P1500T1000\r\n");
-  delay(delayreset);
-  Serial2.print("#3P800T1000\r\n");
-  delay(delayreset);
-  Serial2.print("#4P2000T1000\r\n");
-  delay(delayreset);
-  Serial2.print("#5P1500T1000\r\n");
-  delay(delayreset);
-  Serial2.print("#6P1700T1000\r\n");
-  delay(delayreset);
-  // Serial2.print("#1P1500T0500\r\n");
-  Serial.print("Rest end \n");
- 
+void point1_laydown_0(){
+  int delay1=2000;
+  Serial.println("Point1....");
+  Serial2.print("#10P0000T0000\r\n"); //start
+  Serial2.print("#1P1750#2P1700#3P1100#4P2000T1000\r\n"); 
+  delay(delay1);
+  Serial2.print("#2P2100#5P500T1000\r\n"); 
+  delay(delay1);
+  Serial2.print("#6P1250T1000\r\n"); 
+  delay(delay1);
+  Serial.println("Point1 finish");
+  stop();
 }
 
-void stop(){
-  Serial2.print("#STOP\r\n");
+void point2_laydown_0(){
+  int delay1=2000;
+  Serial.println("Point2....");
+  Serial2.print("#10P0000T0000\r\n"); //start
+  Serial2.print("#1P1500#2P1700#3P1100#4P2000T1000\r\n"); 
+  delay(delay1);
+  Serial2.print("#2P2100#5P500T1000\r\n"); 
+  delay(delay1);
+  Serial2.print("#6P1250T1000\r\n"); 
+  delay(delay1);
+  Serial.println("Point2 finish");
+  stop();
+}
+void point3_laydown_0(){
+  int delay1=2000;
+  Serial.println("Point3....");
+  Serial2.print("#10P0000T0000\r\n"); //start
+  Serial2.print("#1P1250#2P1700#3P1100#4P1900T1000\r\n"); 
+  delay(delay1);
+  Serial2.print("#2P2100#5P500T1000\r\n"); 
+  delay(delay1);
+  Serial2.print("#6P1250T1000\r\n"); 
+  delay(delay1);
+  Serial.println("Point3 finish");
+  stop();
 }
 
 void plastic(){
   int delayp=2000;
   Serial.println("plastic start");
-  Serial2.print("#2P1500T1000\r\n"); 
+  Serial2.print("#2P1500#1P1500#3P2000#4P1500#5P1500T1000\r\n");
   delay(delayp);
-  Serial2.print("#1P1500T1000\r\n");
-  delay(delayp);
-  Serial2.print("#3P2000T1000\r\n");
-  delay(delayp);
-  Serial2.print("#4P1500T1000\r\n");
-  delay(delayp);
-  Serial2.print("#5P1500T1000\r\n");
-  delay(delayp);
-  Serial2.print("#3P1500T1000\r\n"); 
-  delay(delayp);
-  Serial2.print("#2P700T1000\r\n"); 
+  Serial2.print("#3P1500#2P700T1000\r\n"); 
   delay(delayp);
   Serial2.print("#6P1700T1000\r\n"); 
-
   Serial.println("plastic finish");
 }
 
@@ -262,6 +353,7 @@ void metal(){
   Serial2.print("#6P1700T1000\r\n"); 
   Serial.println("metal finish");
 }
+
 void paper(){
   int delayp=2000;
   Serial.println("metal start");
@@ -282,8 +374,21 @@ void paper(){
   Serial2.print("#6P1700T1000\r\n"); 
   Serial.println("paper finish");
 }
-
-
+  
+void stop(){
+  Serial2.print("#STOP\r\n");
+}
+void reset(){
+  int delayreset=2000;
+  Serial.println("Resting....");
+  // Serial2.print("#1P0000T0000\r\n"); //start
+  Serial2.print("#10P0000T1000\r\n");
+  Serial2.print("#1P1500#2P1500#3P800#4P2000#5P1500#6P1700T1500\r\n");
+  delay(delayreset);
+  // Serial2.print("#1P1500T0500\r\n");
+  Serial.print("Rest end \n");
+ 
+}
 void loop() {
   // put your main code here, to run repeatedly:
    if (!client.connected()) {
