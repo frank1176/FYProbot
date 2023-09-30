@@ -13,7 +13,17 @@ make install
 
 v4l2rtspserver -F 30 -W 640 -H 480 -P 8554 /dev/video0
 v4l2rtspserver -F 60 -W 640 -H 480 -P 8554 /dev/video0
-
+v4l2rtspserver -F 15 -W 640 -H 480 -P 8554 /dev/video0
+v4l2rtspserver -F 10 -W 640 -H 480 -P 8554 /dev/video0
+v4l2rtspserver -F 5 -W 640 -H 480 -P 8554 /dev/video0
+v4l2rtspserver -F 20 -W 640 -H 480 -P 8554 /dev/video0
+v4l2rtspserver -F 0 -W 640 -H 480 -P 8554 /dev/video0
+v4l2rtspserver -F 60 -W 640 -H 480 -P 8554 /dev/video0
+# v4l2rtspserver -v -c -F 20 -W 640 -H 480 -P 8554 /dev/video0
+# v4l2rtspserver -F 15 -W 640 -H 480 -P 8554 /dev/video0
+# v4l2rtspserver --rtsp-tcp /dev/video0
+# v412-ctl -c repeat_sequence_header=1
+# v4l2rtspserver -c
 
 # yolov5 
 python detect.py --source rtsp://engineer:anakperantau@192.168.0.23:8554/unicast --weights yolov5s.pt
