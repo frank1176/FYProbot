@@ -164,7 +164,7 @@ void plastic(){
   Serial.println("plastic start");
   Serial2.print("#2P1500#1P1500#3P2000#4P1500#5P1500T1000\r\n");
   delay(delayp);
-  Serial2.print("#3P1500#2P700T1000\r\n"); 
+  Serial2.print("#3P1500#2P750T1000\r\n"); 
   delay(delayp);
   Serial2.print("#6P1700T1000\r\n"); 
   Serial.println("plastic finish");
@@ -173,40 +173,20 @@ void plastic(){
 void metal(){
   int delaym=2000;
   Serial.println("metal start");
-  Serial2.print("#2P1500T1000\r\n"); 
+  Serial2.print("#2P1500#1P1800#3P2000#4P1500#5P1500T1000\r\n"); 
   delay(delaym);
-  Serial2.print("#1P1700T1000\r\n");
-  delay(delaym);
-  Serial2.print("#3P2000T1000\r\n");
-  delay(delaym);
-  Serial2.print("#4P1500T1000\r\n");
-  delay(delaym);
-  Serial2.print("#5P1500T1000\r\n");
-  delay(delaym);
-  Serial2.print("#3P1500T1000\r\n"); 
-  delay(delaym);
-  Serial2.print("#2P700T1000\r\n"); 
-  delay(delaym);
+  Serial2.print("#3P1500#2P800T1000\r\n"); 
+  delay(delaym); 
   Serial2.print("#6P1700T1000\r\n"); 
   Serial.println("metal finish");
 }
 
 void paper(){
   int delayp=2000;
-  Serial.println("metal start");
-  Serial2.print("#2P1500T1000\r\n"); 
+  Serial.println("paper start");
+  Serial2.print("#2P1500#1P1250#3P2000#4P1500#5P1500T1000\r\n"); 
   delay(delayp);
-  Serial2.print("#1P1200T1000\r\n");
-  delay(delayp);
-  Serial2.print("#3P2000T1000\r\n");
-  delay(delayp);
-  Serial2.print("#4P1500T1000\r\n");
-  delay(delayp);
-  Serial2.print("#5P1500T1000\r\n");
-  delay(delayp);
-  Serial2.print("#3P1500T1000\r\n"); 
-  delay(delayp);
-  Serial2.print("#2P700T1000\r\n"); 
+  Serial2.print("#3P1500#2P750T1000\r\n"); 
   delay(delayp);
   Serial2.print("#6P1700T1000\r\n"); 
   Serial.println("paper finish");

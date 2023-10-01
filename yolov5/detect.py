@@ -399,8 +399,13 @@ def tograb():
         objectname = last_dict['Object_name']
         track_id = last_dict['track_id']
         point = last_dict['point']
-       
-        # Check if track_id and point are not empty
+        
+        # Check for the specific "No track_id found" case first
+        if track_id == "No track_id found":
+            print("No track_id found, skipping MQTT publish.")
+            return
+
+        # Now check if both track_id and point are available and not empty
         if track_id and point:
             if (track_id, point) not in sent_objects:
                 client.publish(point, objectname)

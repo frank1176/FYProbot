@@ -6,8 +6,9 @@
 
 int input;
 
-const char *ssid = "siewseng@unifi"; // Enter your WiFi name
-const char *password = "69983155";  // Enter WiFi password
+// const char *ssid = "siewseng@unifi"; // Enter your WiFi name
+const char *ssid = "FOCS_CCI"; // Enter your WiFi name
+const char *password = "taruc123456";  // Enter WiFi password
 const char* mqtt_server = "c2.kynoci.com";
 const char* mqtt_topic     = "hi2"; // TOPIC (MUST BE UNIQUE)
 int         mqtt_port      = 1883;
@@ -108,7 +109,7 @@ void handlePoint1(String &receivedString) {
         delay(2000);
         plastic();
     } else if (receivedString == "paperrotation") {
-        point1_laydown_0();
+        point1_laydown_90();
         delay(2000);
         paper();
     } else if (receivedString == "metal_standrotation") {
@@ -141,7 +142,7 @@ void handlePoint2(String &receivedString) {
         delay(2000);
         plastic();
     } else if (receivedString == "paperrotation") {
-        point2_laydown_0();
+        point2_laydown_90();
         delay(2000);
         paper();
     } else if (receivedString == "metal_standrotation") {
@@ -174,7 +175,7 @@ void handlePoint3(String &receivedString) {
         delay(2000);
         plastic();
     } else if (receivedString == "paperrotation") {
-        point3_laydown_0();
+        point3_laydown_90();
         delay(2000);
         paper();
     } else if (receivedString == "metal_standrotation") {
@@ -247,9 +248,9 @@ void point1_laydown_90(){
   int delay1=2000;
   Serial.println("Point1....");
   Serial2.print("#10P0000T0000\r\n"); //start
-  Serial2.print("#1P1700#2P1700#3P1100#4P1900T1000\r\n"); 
+  Serial2.print("#1P1800#2P1700#3P1100#4P1900T1000\r\n"); 
   delay(delay1);
-  Serial2.print("#5P1800#2P2100T1000\r\n"); 
+  Serial2.print("#5P1800#2P2200T1000\r\n"); 
   delay(delay1);
   Serial2.print("#6P1200T1000\r\n");  
   Serial.println("Point1 finish");
@@ -327,54 +328,31 @@ void plastic(){
   Serial.println("plastic start");
   Serial2.print("#2P1500#1P1500#3P2000#4P1500#5P1500T1000\r\n");
   delay(delayp);
-  Serial2.print("#3P1500#2P700T1000\r\n"); 
+  Serial2.print("#3P1500#2P750T1000\r\n"); 
   delay(delayp);
   Serial2.print("#6P1700T1000\r\n"); 
   Serial.println("plastic finish");
 }
-
 void metal(){
   int delaym=2000;
   Serial.println("metal start");
-  Serial2.print("#2P1500T1000\r\n"); 
+  Serial2.print("#2P1500#1P1800#3P2000#4P1500#5P1500T1000\r\n"); 
   delay(delaym);
-  Serial2.print("#1P1700T1000\r\n");
-  delay(delaym);
-  Serial2.print("#3P2000T1000\r\n");
-  delay(delaym);
-  Serial2.print("#4P1500T1000\r\n");
-  delay(delaym);
-  Serial2.print("#5P1500T1000\r\n");
-  delay(delaym);
-  Serial2.print("#3P1500T1000\r\n"); 
-  delay(delaym);
-  Serial2.print("#2P700T1000\r\n"); 
-  delay(delaym);
+  Serial2.print("#3P1500#2P800T1000\r\n"); 
+  delay(delaym); 
   Serial2.print("#6P1700T1000\r\n"); 
   Serial.println("metal finish");
 }
-
 void paper(){
   int delayp=2000;
-  Serial.println("metal start");
-  Serial2.print("#2P1500T1000\r\n"); 
+  Serial.println("paper start");
+  Serial2.print("#2P1500#1P1250#3P2000#4P1500#5P1500T1000\r\n"); 
   delay(delayp);
-  Serial2.print("#1P1200T1000\r\n");
-  delay(delayp);
-  Serial2.print("#3P2000T1000\r\n");
-  delay(delayp);
-  Serial2.print("#4P1500T1000\r\n");
-  delay(delayp);
-  Serial2.print("#5P1500T1000\r\n");
-  delay(delayp);
-  Serial2.print("#3P1500T1000\r\n"); 
-  delay(delayp);
-  Serial2.print("#2P700T1000\r\n"); 
+  Serial2.print("#3P1500#2P750T1000\r\n"); 
   delay(delayp);
   Serial2.print("#6P1700T1000\r\n"); 
   Serial.println("paper finish");
-}
-  
+}  
 void stop(){
   Serial2.print("#STOP\r\n");
 }
